@@ -1,7 +1,7 @@
 -- hub name
-getgenv().namehub = 'Example'
+getgenv().namehub = 'Auto Collect - filipp999'
 
-local ui = loadstring(game:HttpGet("insert ui url here"))()
+local ui = loadstring(game:HttpGet(""))()
 
 local main = ui.new()
 local tabAuto = main:create_tab("Auto", "7734051454")
