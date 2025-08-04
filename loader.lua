@@ -1,3 +1,3 @@
 -- skidder caught in 4k ultra hd, dont skid bro its useless i obf everything
 
-loadstring(game:HttpGet("https://cdn.authguard.org/virtual-file/0f45df256cd044be935de48d9fd7fac0"))()
+loadstring(game:HttpGet("https://cdn.authguard.org/virtual-file/af4bff9b7a28424fa2de814f30b54971"))()
