@@ -1,0 +1,7 @@
+$nomention
+$async[a]
+Hello!
+$endasync
+$await[a]
+$replyIn[5s]
+$eval[$httpGet[Url]]
