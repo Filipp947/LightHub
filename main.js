@@ -1,11 +1,9 @@
 // ------------------------ HAMBURGER TOGGLE ------------------------
 const hamburger = document.getElementById('hamburger');
 const menu = document.getElementById('menu');
-
 hamburger.addEventListener('click', () => {
   hamburger.classList.toggle('active');
-
-  if(menu.style.display === 'flex'){
+  if (menu.style.display === 'flex') {
     menu.style.opacity = 0;
     setTimeout(() => { menu.style.display = 'none'; }, 300);
   } else {
@@ -73,11 +71,10 @@ function renderGames() {
   const keyFilter = filterKey.value;
   const statusFilter = filterStatus.value;
 
-  scripts.filter(g => 
-    g.name.toLowerCase().includes(query) &&
-    (keyFilter === "" || g.type === keyFilter) &&
-    (statusFilter === "" || g.status === statusFilter)
-  ).forEach((g, i) => {
+  scripts.filter(g => g.name.toLowerCase().includes(query) &&
+                      (keyFilter === "" || g.type === keyFilter) &&
+                      (statusFilter === "" || g.status === statusFilter))
+         .forEach((g, i) => {
     const card = document.createElement("div");
     card.className = "game-card";
     card.innerHTML = `
@@ -94,16 +91,7 @@ function renderGames() {
       card.style.transition = "all 0.5s ease";
       card.style.opacity = 1;
       card.style.transform = "scale(1)";
-    }, i*100);
-
-    card.addEventListener("mouseenter", () => {
-      card.style.boxShadow = "0 0 80px rgba(200,132,252,0.8), 0 0 100px rgba(138,43,226,0.5)";
-      card.style.transform = "scale(1.05)";
-    });
-    card.addEventListener("mouseleave", () => {
-      card.style.boxShadow = "0 0 15px rgba(138,43,226,0.4)";
-      card.style.transform = "scale(1)";
-    });
+    }, i * 100);
 
     card.addEventListener("click", () => openScriptPage(i));
     gameList.appendChild(card);
@@ -116,7 +104,7 @@ function renderGames() {
 });
 renderGames();
 
-// ------------------------ SCRIPT PAGE ------------------------
+// ------------------------ INDIVIDUAL SCRIPT PAGE ------------------------
 const scriptPage = document.getElementById("scriptPage");
 const backBtn = document.getElementById("backBtn");
 const scriptName = document.getElementById("scriptName");
@@ -131,36 +119,44 @@ function openScriptPage(index) {
   pages.forEach(p => p.classList.remove("active-page"));
   scriptPage.classList.add("active-page");
 
-  // Animate script page content
+  // Animate and fill content
   scriptName.textContent = g.name;
   scriptLoader.textContent = g.loader;
-  scriptFeatures.innerHTML = g.features.map(f => `<span class="feature-chip glow-chip">${f}</span>`).join("");
-  scriptChangelog.innerHTML = g.changelog.map(c => `<li>${c}</li>`).join("");
   scriptAnnouncement.textContent = g.announcement || "";
 
-  // Fade in sequence
-  [scriptName, scriptLoader, scriptFeatures, scriptChangelog, scriptAnnouncement].forEach((el, i) => {
+  // Animate opacity
+  [scriptName, scriptLoader, scriptAnnouncement, scriptFeatures, scriptChangelog].forEach(el => {
     el.style.opacity = 0;
-    setTimeout(() => {
-      el.style.transition = "all 0.5s ease";
-      el.style.opacity = 1;
-      el.style.transform = "translateY(0)";
-    }, i*200);
   });
 
-  // feature chip hover glow
-  document.querySelectorAll(".feature-chip").forEach(chip => {
-    chip.addEventListener("mouseenter", () => {
-      chip.style.transform = "scale(1.1) rotateZ(2deg)";
-      chip.style.boxShadow = "0 0 30px #ffccff, 0 0 50px #c084fc, 0 0 70px #8a2be2";
-    });
-    chip.addEventListener("mouseleave", () => {
-      chip.style.transform = "scale(1) rotateZ(0deg)";
-      chip.style.boxShadow = "0 0 15px #c084fc, 0 0 25px #8a2be2";
-    });
+  // FEATURES as chips
+  scriptFeatures.innerHTML = "";
+  g.features.forEach(f => {
+    const chip = document.createElement("span");
+    chip.className = "feature-chip";
+    chip.textContent = f;
+    scriptFeatures.appendChild(chip);
   });
+
+  // CHANGELOG
+  scriptChangelog.innerHTML = "";
+  const ul = document.createElement("ul");
+  g.changelog.forEach(c => {
+    const li = document.createElement("li");
+    li.textContent = c;
+    ul.appendChild(li);
+  });
+  scriptChangelog.appendChild(ul);
+
+  // fade-in sequentially
+  setTimeout(() => { scriptName.style.transition = "all 0.5s"; scriptName.style.opacity = 1; }, 100);
+  setTimeout(() => { scriptAnnouncement.style.transition = "all 0.5s"; scriptAnnouncement.style.opacity = 1; }, 300);
+  setTimeout(() => { scriptLoader.style.transition = "all 0.5s"; scriptLoader.style.opacity = 1; }, 500);
+  setTimeout(() => { scriptFeatures.style.transition = "all 0.5s"; scriptFeatures.style.opacity = 1; }, 700);
+  setTimeout(() => { scriptChangelog.style.transition = "all 0.5s"; scriptChangelog.style.opacity = 1; }, 900);
 }
 
+// Back button
 backBtn.addEventListener("click", () => {
   pages.forEach(p => p.classList.remove("active-page"));
   document.getElementById("scripts").classList.add("active-page");
@@ -171,10 +167,8 @@ copyLoader.addEventListener("click", () => {
   navigator.clipboard.writeText(scriptLoader.textContent);
   copyLoader.textContent = "Copied!";
   copyLoader.style.transform = "scale(1.2)";
-  copyLoader.style.boxShadow = "0 0 40px #ffccff, 0 0 60px #c084fc, 0 0 80px #8a2be2";
   setTimeout(() => { 
     copyLoader.textContent = "Copy Loader"; 
     copyLoader.style.transform = "scale(1)"; 
-    copyLoader.style.boxShadow = "0 0 15px #c084fc, 0 0 25px #8a2be2, 0 0 35px #ffccff";
   }, 1500);
 });
