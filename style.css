@@ -312,3 +312,22 @@ footer {
   #scriptPage .card { flex-direction: row; gap: 2rem; }
   .loader-changelog-container { flex-direction: row; gap: 1.5rem; }
 }
+
+
+/* ---------- DISABLE TEXT SELECTION & MOBILE LONG-PRESS ---------- */
+body, .card, .game-card, .feature-chip, .copy-btn, .announcement, .scroll-box, header h1, .menu button, .filters input:not(:focus), .filters select:not(:focus) {
+  -webkit-user-select: none; /* safari, chrome */
+  -moz-user-select: none;    /* firefox */
+  -ms-user-select: none;     /* ie10+ */
+  user-select: none;         /* standard */
+  -webkit-touch-callout: none; /* disable iOS long-press menu */
+}
+
+/* keep text selection for inputs & textareas */
+input:focus, textarea:focus {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
