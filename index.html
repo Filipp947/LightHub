@@ -5,7 +5,6 @@
 <title>Light Hub</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-/* reset & body */
 *{box-sizing:border-box;margin:0;padding:0;}
 body{
   font-family:'Segoe UI',sans-serif;
@@ -14,10 +13,6 @@ body{
   min-height:100vh;
   overflow-x:hidden;
   -webkit-tap-highlight-color: transparent;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  transition:background 0.5s;
 }
 
 /* stars background */
@@ -33,29 +28,25 @@ body::before{
 /* header */
 header{
   background:rgba(40,0,70,0.85);
-  padding:1rem 2rem;
+  padding:1rem;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  width:100%;
-  max-width:1200px;
   box-shadow:0 0 25px #8a2be2;
   position:sticky; top:0; z-index:10;
   backdrop-filter:blur(8px);
-  border-radius:0 0 1rem 1rem;
+  border-radius:0 0 15px 15px;
 }
 header h1{
-  font-size:1.8rem;
+  font-size:1.5rem;
   background:linear-gradient(90deg,#ffccff,#c084fc,#8a2be2);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
   font-weight:bold;
   position:relative;
+  animation:headerGlow 2s infinite alternate;
 }
-header h1::after{
-  content:'✨'; position:absolute; animation:starTwinkle 2s infinite alternate; top:-5px; right:-25px;
-}
-@keyframes starTwinkle{from{opacity:0.3;}to{opacity:1;}}
+@keyframes headerGlow{from{text-shadow:0 0 5px #c084fc;}to{text-shadow:0 0 15px #ffccff;}}
 
 /* hamburger */
 .hamburger{
@@ -63,36 +54,35 @@ header h1::after{
   flex-direction:column;
   justify-content:space-between;
   cursor:pointer;
+  -webkit-tap-highlight-color: transparent;
   width:28px;
   height:22px;
-  z-index:15;
+  transition:transform 0.3s;
 }
+.hamburger.active{transform:rotate(90deg);}
 .hamburger span{
   display:block;
   background:#eee;
   border-radius:2px;
   height:3px;
   width:100%;
-  transition:0.35s cubic-bezier(0.68,-0.55,0.265,1.55);
+  transition:all 0.3s;
 }
-.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
-.hamburger.active span:nth-child(2){opacity:0;}
-.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
-.hamburger:hover span{background:linear-gradient(90deg,#ffccff,#c084fc,#8a2be2);box-shadow:0 0 8px #c084fc;}
 
 /* menu */
 .menu{
   position:absolute;
-  top:75px;
-  right:2rem;
+  top:65px;
+  right:1rem;
   background:rgba(50,0,100,0.95);
   border-radius:0.8rem;
   overflow:hidden;
   display:none;
   flex-direction:column;
   z-index:20;
-  box-shadow:0 0 25px #c084fc;
+  animation:menuFade 0.4s ease forwards;
 }
+@keyframes menuFade{from{opacity:0; transform:translateY(-10px);}to{opacity:1;transform:translateY(0);}}
 .menu button{
   padding:1rem 1.2rem;
   background:none;
@@ -104,7 +94,6 @@ header h1::after{
   cursor:pointer;
   transition:all 0.25s;
   outline:none;
-  -webkit-tap-highlight-color: transparent;
 }
 .menu button:hover{
   background:rgba(200,132,252,0.2);
@@ -112,78 +101,45 @@ header h1::after{
 }
 
 /* pages */
-.page{
-  display:none;
-  width:100%;
-  max-width:1200px;
-  padding:1rem 2rem;
-  opacity:0;
-  transform:translateY(15px);
-  transition:all 0.5s ease;
-}
-.active-page{
-  display:block;
-  opacity:1;
-  transform:translateY(0);
-}
+.page{display:none;padding:1rem;animation:fade 0.5s;}
+.active-page{display:block;}
+@keyframes fade{from{opacity:0;}to{opacity:1;}}
 
 /* card */
 .card{
   background:rgba(40,0,70,0.6);
   border-radius:1rem;
-  padding:1.5rem;
+  padding:1rem;
   margin:1rem 0;
   box-shadow:0 0 20px rgba(160,100,255,0.4);
   backdrop-filter:blur(8px);
-  animation:pop 0.5s ease forwards;
+  animation:pop 0.4s;
   position:relative;
 }
-.card:hover{
-  transform:scale(1.02);
-  box-shadow:0 0 45px rgba(200,132,252,0.6);
-  transition:0.3s;
-}
+.card:hover{transform:scale(1.02);box-shadow:0 0 35px rgba(200,132,252,0.6);transition:0.3s;}
 @keyframes pop{from{transform:scale(0.97);opacity:0;}to{transform:scale(1);opacity:1;}}
-
 h2{color:#c084fc;margin-bottom:0.8rem;}
 
 /* filters + search */
-.filters{
-  display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;
-  justify-content:flex-start;
-  align-items:center;
-}
+.filters{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;}
 .filters select,.filters input{
-  padding:0.5rem 0.8rem;
-  border-radius:0.5rem;
-  border:none;
-  font-size:0.9rem;
-  background:rgba(80,0,130,0.3);
-  color:#eee;
-  transition:all 0.3s ease;
+  padding:0.4rem 0.6rem;border-radius:0.5rem;border:none;font-size:0.85rem;
+  background:rgba(80,0,120,0.6); color:#c084fc;
 }
-.filters select:hover,.filters input:hover,
-.filters select:focus,.filters input:focus{
-  background:rgba(120,0,200,0.4);
-  transform:scale(1.05);
-  outline:none;
-}
+.filters input::placeholder{color:#d0a6ff;}
 
 /* game list */
 .game-list{display:grid;gap:0.8rem;grid-template-columns:1fr;}
 .game-card{
-  background:rgba(60,0,100,0.7); 
-  padding:1rem;
-  border-radius:1rem; 
-  box-shadow:0 0 15px rgba(138,43,226,0.4);
-  transition:transform 0.35s, box-shadow 0.35s, opacity 0.5s;
+  background:rgba(60,0,100,0.7); padding:1rem;
+  border-radius:1rem; box-shadow:0 0 15px rgba(138,43,226,0.4);
+  transition:transform 0.25s, box-shadow 0.3s, opacity 0.5s;
   cursor:pointer;
   position:relative;
   opacity:0;
-  transform:translateY(20px);
 }
-.game-card.show{opacity:1;transform:translateY(0);}
-.game-card:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 0 40px rgba(200,132,252,0.7);}
+.game-card.show{opacity:1; animation:pop 0.5s;}
+.game-card:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 30px rgba(200,132,252,0.6);}
 .badges{margin-top:0.5rem;display:flex;gap:0.5rem;flex-wrap:wrap;}
 .badge{padding:0.2rem 0.5rem;border-radius:0.4rem;font-size:0.75rem;font-weight:bold;color:#111;}
 .badge.yellow{background:#ffd633;}
@@ -196,67 +152,126 @@ h2{color:#c084fc;margin-bottom:0.8rem;}
   padding:1rem;
   border-radius:0.8rem;
   margin-bottom:1rem;
-  box-shadow:0 0 25px rgba(255,200,255,0.3);
+  box-shadow:0 0 20px rgba(255,200,255,0.3);
   overflow-x:auto;
   white-space:nowrap;
   position:relative;
-  transition:all 0.4s ease;
+  transition:all 0.3s ease;
 }
 .scroll-box::-webkit-scrollbar{height:6px;}
 .scroll-box::-webkit-scrollbar-thumb{background:#c084fc;border-radius:3px;}
-.scroll-box:hover{transform:scale(1.01);box-shadow:0 0 50px rgba(200,132,252,0.8);}
 
 /* copy button outside */
 .copy-btn{
   margin-bottom:0.5rem;
   background:#c084fc;
   border:none;
-  padding:0.5rem 1rem;
+  padding:0.4rem 0.8rem;
   border-radius:0.5rem;
   cursor:pointer;
   color:#111;
   font-weight:bold;
-  font-size:0.9rem;
-  transition:all 0.3s ease;
+  font-size:0.85rem;
+  transition:all 0.3s;
 }
-.copy-btn:hover{background:#8a2be2;transform:scale(1.05);box-shadow:0 0 15px #c084fc;}
+.copy-btn:hover{background:#8a2be2; transform:scale(1.05);}
+.copy-btn:active{transform:scale(0.95);}
 
 /* announcement */
 .announcement{
   background:rgba(255, 255, 255, 0.1);
-  padding:1rem 1.2rem;
+  padding:0.7rem 1rem;
   border-left:4px solid #c084fc;
   border-radius:0.5rem;
   margin-bottom:1rem;
-  box-shadow:0 0 20px rgba(200,132,252,0.3);
-  animation:fade 0.6s ease;
+  box-shadow:0 0 15px rgba(200,132,252,0.3);
 }
 
 /* footer */
-footer{text-align:center;padding:2rem;color:#999;font-size:0.85rem;}
+footer{text-align:center;padding:2rem;color:#999;font-size:0.8rem;}
 
-/* responsive grids */
+/* script page */
+.script-container{
+  display:flex;
+  flex-direction:column;
+  gap:1.5rem;
+  animation:fadeUp 0.6s ease forwards;
+}
+@keyframes fadeUp{from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);}}
+
+.script-title{
+  color:#ffccff;
+  font-size:2rem;
+  text-align:center;
+  text-shadow:0 0 15px #c084fc,0 0 25px #8a2be2;
+  animation:textGlow 2s infinite alternate;
+}
+@keyframes textGlow{
+  from{text-shadow:0 0 10px #c084fc,0 0 20px #8a2be2;}
+  to{text-shadow:0 0 20px #ffccff,0 0 35px #c084fc;}
+}
+
+.glow-box{
+  background:rgba(40,0,70,0.75);
+  border-radius:1rem;
+  padding:1rem 1.5rem;
+  box-shadow:0 0 25px rgba(138,43,226,0.4);
+  backdrop-filter:blur(10px);
+  transition:all 0.35s ease;
+  position:relative;
+  animation:boxFade 0.5s ease forwards;
+}
+.glow-box:hover{
+  box-shadow:0 0 45px rgba(200,132,252,0.7);
+  transform:scale(1.02);
+}
+@keyframes boxFade{from{opacity:0; transform:translateY(15px);}to{opacity:1; transform:translateY(0);}}
+
+.glow-box h3{
+  color:#c084fc;
+  margin-bottom:0.8rem;
+  text-shadow:0 0 10px #c084fc;
+}
+
+/* list animations */
+.scroll-box li{
+  opacity:0; transform:translateX(-20px);
+  animation:fadeSlide 0.5s forwards;
+}
+@keyframes fadeSlide{from{opacity:0; transform:translateX(-20px);}to{opacity:1; transform:translateX(0);}}
+
+.back-btn{
+  align-self:flex-start;
+  margin-bottom:1rem;
+}
+
+/* responsive */
 @media(min-width:768px){
   header h1{font-size:2rem;}
   .hamburger{width:30px;height:25px;}
   .menu button{font-size:1.1rem;padding:0.8rem 1.5rem;}
-  .filters select,.filters input{font-size:0.95rem;padding:0.55rem 0.8rem;}
-  .card{padding:1.7rem;}
-  .game-list{grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1rem;}
+  .filters select,.filters input{font-size:0.95rem;padding:0.5rem 0.8rem;}
+  .card{padding:1.5rem;}
+  .game-list{grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem;}
 }
 @media(min-width:1024px){
   header h1{font-size:2.3rem;}
   .hamburger{width:35px;height:28px;}
   .menu button{font-size:1.2rem;padding:0.9rem 1.6rem;}
-  .filters select,.filters input{font-size:1rem;padding:0.6rem 1rem;}
+  .filters select,.filters input{font-size:1rem;padding:0.55rem 0.9rem;}
   .card{padding:2rem;}
 }
 </style>
 </head>
 <body>
+
 <header>
 <h1>Light Hub</h1>
-<div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+<div class="hamburger" id="hamburger">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
 <div class="menu" id="menu">
   <button data-page="home">Home</button>
   <button data-page="scripts">Scripts</button>
@@ -275,27 +290,47 @@ footer{text-align:center;padding:2rem;color:#999;font-size:0.85rem;}
     <h2>Supported Games</h2>
     <div class="filters">
       <input type="text" id="searchBox" placeholder="Search game...">
-      <select id="filterKey"><option value="">All Types</option><option value="key system">Key System</option><option value="keyless">Keyless</option></select>
-      <select id="filterStatus"><option value="">All Status</option><option value="undetected">Undetected</option><option value="detected">Detected</option></select>
+      <select id="filterKey">
+        <option value="">All Types</option>
+        <option value="Key System">Key System</option>
+        <option value="Keyless">Keyless</option>
+      </select>
+      <select id="filterStatus">
+        <option value="">All Status</option>
+        <option value="Undetected">Undetected</option>
+        <option value="Detected">Detected</option>
+      </select>
     </div>
     <div class="game-list" id="gameList"></div>
   </div>
 </section>
 
-<section id="keysystem" class="page"><div class="card"><h2>Key System</h2><p>Coming soon ✨</p></div></section>
-<section id="discord" class="page"><div class="card"><h2>Discord</h2><p>Join our Discord server for updates, announcements, and support! ✨</p></div></section>
+<section id="keysystem" class="page">
+  <div class="card"><h2>Key System</h2><p>Coming soon ✨</p></div>
+</section>
+
+<section id="discord" class="page">
+  <div class="card"><h2>Discord</h2><p>Join our community on Discord for updates and support!</p></div>
+</section>
 
 <section id="scriptPage" class="page">
-  <button id="backBtn" class="copy-btn">← Back</button>
+  <button id="backBtn" class="copy-btn back-btn">← Back</button>
   <div class="announcement" id="scriptAnnouncement"></div>
-  <div class="card">
-    <h2 id="scriptName"></h2>
-    <button class="copy-btn" id="copyLoader">Copy Loader</button>
-    <div class="scroll-box"><code id="scriptLoader"></code></div>
-    <h3>Features</h3>
-    <div class="scroll-box"><ul id="scriptFeatures"></ul></div>
-    <h3>Changelog</h3>
-    <div class="scroll-box"><ul id="scriptChangelog"></ul></div>
+  <div class="script-container">
+    <h1 id="scriptName" class="script-title"></h1>
+    <div class="glow-box">
+      <h3>Loader</h3>
+      <div class="scroll-box" id="scriptLoader"></div>
+      <button class="copy-btn" id="copyLoader">Copy Loader</button>
+    </div>
+    <div class="glow-box">
+      <h3>Features</h3>
+      <div class="scroll-box"><ul id="scriptFeatures"></ul></div>
+    </div>
+    <div class="glow-box">
+      <h3>Changelog</h3>
+      <div class="scroll-box"><ul id="scriptChangelog"></ul></div>
+    </div>
   </div>
 </section>
 
@@ -308,12 +343,11 @@ const menu=document.getElementById("menu");
 hamburger.addEventListener("click",()=>{
   hamburger.classList.toggle("active");
   menu.style.display=(menu.style.display==="flex"?"none":"flex");
-  menu.style.flexDirection="column";
 });
 
 // script database
 const scripts=[
-  { name:"99 Nights in the Forest", loader:"loadstring(game:HttpGet('https://raw.githubusercontent.com/Filipp947/LightHub/refs/heads/main/99nightsintheforestloader.lua'))()", announcement:"Bypassed Latest Anticheat!", features:["Coming Soon!"], changelog:["Bypassed Latest Anticheat!","Fixed Lag Issues!"], type:"Key System", status:"Undetected"}
+  { name:"99 Nights in the Forest", loader:"loadstring(game:HttpGet('https://raw.githubusercontent.com/Filipp947/LightHub/refs/heads/main/99nightsintheforestloader.lua'))()", announcement:"Bypassed Latest Anticheat!", features:["Coming Soon!","Amazing Visuals!","Fast Load"], changelog:["Bypassed Latest Anticheat!","Fixed Lag Issues!"], type:"Key System", status:"Undetected"}
 ];
 
 // page navigation
@@ -349,7 +383,6 @@ function renderGames(){
       setTimeout(()=>card.classList.add("show"),50*i);
   });
 }
-
 [searchBox,filterKey,filterStatus].forEach(el=>{ el.addEventListener("input",renderGames); el.addEventListener("change",renderGames); });
 renderGames();
 
@@ -367,10 +400,21 @@ function openScriptPage(index){
   const g=scripts[index];
   pages.forEach(p=>p.classList.remove("active-page"));
   scriptPage.classList.add("active-page");
+
   scriptName.textContent=g.name;
   scriptLoader.textContent=g.loader;
-  scriptFeatures.innerHTML=g.features.map(f=>`<li>${f}</li>`).join("");
-  scriptChangelog.innerHTML=g.changelog.map(c=>`<li>${c}</li>`).join("");
+  scriptFeatures.innerHTML="";
+  g.features.forEach((f,i)=>{
+    const li=document.createElement("li"); li.textContent=f;
+    li.style.animationDelay=(i*0.1)+"s";
+    scriptFeatures.appendChild(li);
+  });
+  scriptChangelog.innerHTML="";
+  g.changelog.forEach((c,i)=>{
+    const li=document.createElement("li"); li.textContent=c;
+    li.style.animationDelay=(i*0.1)+"s";
+    scriptChangelog.appendChild(li);
+  });
   scriptAnnouncement.textContent=g.announcement || "";
 }
 
@@ -380,11 +424,11 @@ backBtn.addEventListener("click",()=>{
   document.getElementById("scripts").classList.add("active-page");
 });
 
-// copy button
+// copy loader
 copyLoader.addEventListener("click", () => {
   navigator.clipboard.writeText(scriptLoader.textContent);
-  copyLoader.textContent = "Copied!";
-  setTimeout(() => copyLoader.textContent = "Copy Loader", 1500);
+  copyLoader.textContent="Copied!";
+  setTimeout(()=>copyLoader.textContent="Copy Loader",1500);
 });
 </script>
 </body>
