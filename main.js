@@ -13,36 +13,54 @@ hamburger.addEventListener('click', () => {
   }
 });
 
-// ------------------------ SCRIPTS DATABASE ------------------------
 const scripts = [
   {
     name: "99 Nights in the Forest",
     loader: `loadstring(game:HttpGet("https://raw.githubusercontent.com/Filipp947/LightHub/refs/heads/main/99nightsintheforestloader.lua"))()`,
     announcement: "Bypassed Latest Anticheat!",
-    features: ["Fast Load", "No Lag", "Auto Collect Items", "Smooth Teleport"],
+    features: [
+      "Kill Aura",
+      "Chop Aura",
+      "Aura Radius",
+      "Enable Hitbox",
+      "Hitbox Size",
+      "Auto Eat",
+      "Auto Upgrade Campfire",
+      "Auto Cook",
+      "Auto Collect Coins",
+      "Auto Pick Flower",
+      "Enable Esp Items",
+      "Esp Entity",
+      "Esp Entity",
+      "Enable Esp Entity",
+      "ESP Players",
+      "Bring",
+      "Bring Scrap to Workbench",
+      "Bring Wood to Workbench",
+      "Teleport to campfire",
+      "Teleport to stronghold",
+      "Teleport To Children",
+      "Enable Fly",
+      "Speed Changer",
+      "Noclip",
+      "Instant Interact",
+      "Disable Deer",
+      "Fullbright",
+      "Auto Plant Saplings",
+      "Delete Fog",
+      "Vibrant Colors",
+      "FPS Boost",
+      "Show FPS",
+      "Show Ping",
+      "Anti AFK Kick",
+      "Anti Void"
+    ],
     changelog: ["Bypassed Latest Anticheat", "Fixed Lag Issues", "Improved Features UI"],
     type: "Key System",
     status: "Undetected"
-  },
-  {
-    name: "Galactic Adventure",
-    loader: `loadstring(game:HttpGet("https://raw.githubusercontent.com/Filipp947/LightHub/main/galacticloader.lua"))()`,
-    announcement: "New Galaxy Update Compatible!",
-    features: ["Auto Farm", "Teleport Anywhere", "Glitch Free"],
-    changelog: ["Added Galaxy Mode", "Improved Smoothness"],
-    type: "Keyless",
-    status: "Undetected"
-  },
-  {
-    name: "Mystic Quest",
-    loader: `loadstring(game:HttpGet("https://raw.githubusercontent.com/Filipp947/LightHub/main/mysticloader.lua"))()`,
-    announcement: "Updated for Mystic Realms",
-    features: ["Speed Boost", "Resource Magnet", "Teleport Shortcuts"],
-    changelog: ["Updated Mystic Realm", "Fixed small bugs"],
-    type: "Key System",
-    status: "Detected"
   }
 ];
+
 
 // ------------------------ PAGE NAVIGATION ------------------------
 const pageButtons = document.querySelectorAll("#menu button");
