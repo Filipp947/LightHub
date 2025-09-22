@@ -1,217 +1,287 @@
-/* reset */
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
+/* ---------- RESET ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
   font-family: 'Segoe UI', sans-serif;
-  background: radial-gradient(circle at top, #1a0033, #050010 80%);
-  color: #eee;
-  min-height: 100vh;
-  overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
-  transition: background 0.5s;
 }
 
-/* stars background with twinkle */
+/* ---------- BODY & BACKGROUND ---------- */
+body {
+  min-height: 100vh;
+  background: radial-gradient(circle at 20% 20%, #1a0033, #050010 85%);
+  color: #eee;
+  overflow-x: hidden;
+  transition: background 0.5s;
+  position: relative;
+}
+
+/* ---------- TWINKLING STARS ---------- */
 body::before {
   content: "";
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0; left: 0; width: 100%; height: 100%;
   background: url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
-  opacity: 0.3;
+  opacity: 0.35;
   z-index: -1;
-  animation: twinkle 12s infinite alternate;
+  animation: twinkle 15s infinite alternate;
 }
-@keyframes twinkle { from {opacity: 0.2;} to {opacity: 0.5;} }
+@keyframes twinkle { from {opacity:0.2;} to {opacity:0.5;} }
 
-/* header */
+/* ---------- HEADER ---------- */
 header {
+  position: sticky;
+  top: 0;
   background: rgba(40,0,70,0.85);
-  padding: 1rem 1.5rem;
+  backdrop-filter: blur(10px);
+  padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 0 25px #8a2be2;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  backdrop-filter: blur(8px);
+  z-index: 20;
+  transition: all 0.3s;
 }
 header h1 {
   font-size: 2rem;
-  font-weight: bold;
   background: linear-gradient(90deg, #ffccff, #c084fc, #8a2be2);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   position: relative;
-  animation: headerGlow 3s ease-in-out infinite alternate;
 }
-@keyframes headerGlow {
-  0% { text-shadow: 0 0 10px #c084fc, 0 0 20px #8a2be2; }
-  50% { text-shadow: 0 0 20px #ffccff, 0 0 40px #c084fc; }
-  100% { text-shadow: 0 0 10px #c084fc, 0 0 20px #8a2be2; }
+header h1::after {
+  content: '✨';
+  position: absolute;
+  top: -5px;
+  right: -25px;
+  animation: starTwinkle 2s infinite alternate;
 }
+@keyframes starTwinkle { from {opacity:0.3;} to {opacity:1;} }
 
-/* hamburger */
+/* ---------- HAMBURGER ---------- */
 .hamburger {
-  width: 35px; height: 28px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 30px;
+  height: 25px;
   cursor: pointer;
-  transition: transform 0.4s ease;
-  z-index: 15;
+  transition: all 0.3s;
 }
 .hamburger span {
-  display: block;
-  height: 4px;
+  height: 3px;
+  width: 100%;
   background: #eee;
   border-radius: 3px;
+  transform-origin: center;
   transition: all 0.4s ease;
 }
-.hamburger.active span:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
-}
-.hamburger.active span:nth-child(2) {
-  opacity: 0;
-}
-.hamburger.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(5px, -5px);
-}
+.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+.hamburger.active span:nth-child(2) { opacity: 0; }
+.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(6px,-6px); }
 
-/* menu */
+/* ---------- MENU ---------- */
 .menu {
   position: absolute;
-  top: 65px; right: 1rem;
-  background: rgba(50,0,100,0.95);
-  border-radius: 0.8rem;
-  overflow: hidden;
+  top: 70px;
+  right: 2rem;
+  background: rgba(60,0,120,0.95);
+  border-radius: 1rem;
   display: none;
   flex-direction: column;
-  z-index: 20;
-  animation: menuFade 0.4s forwards;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(138,43,226,0.6);
 }
-@keyframes menuFade { from {opacity:0; transform: translateY(-10px);} to {opacity:1; transform: translateY(0);} }
 .menu button {
-  padding: 1rem 1.2rem;
-  background:none;
-  border:none;
-  color:#eee;
-  text-align:left;
-  font-weight:bold;
-  font-size:1rem;
-  cursor:pointer;
-  transition: all 0.3s ease;
-  outline:none;
+  background: none;
+  border: none;
+  padding: 1rem 1.5rem;
+  color: #eee;
+  font-weight: bold;
+  font-size: 1rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s;
+  outline: none;
 }
 .menu button:hover {
-  background: rgba(200,132,252,0.2);
+  background: rgba(200,132,252,0.25);
   transform: scale(1.05);
+  text-shadow: 0 0 10px #fff;
 }
 
-/* pages */
-.page { display: none; padding: 1rem; animation: fade 0.5s; }
+/* ---------- PAGES ---------- */
+.page {
+  display: none;
+  padding: 2rem;
+  animation: fadeIn 0.5s ease forwards;
+}
 .active-page { display: block; }
-@keyframes fade { from {opacity:0;} to {opacity:1;} }
+@keyframes fadeIn { from {opacity:0; transform: translateY(10px);} to {opacity:1; transform:translateY(0);} }
 
-/* cards */
+/* ---------- CARD ---------- */
 .card {
   background: rgba(40,0,70,0.7);
   border-radius: 1rem;
-  padding: 1.5rem;
+  padding: 2rem;
   margin: 1rem 0;
-  box-shadow: 0 0 25px rgba(160,100,255,0.4);
+  box-shadow: 0 0 25px rgba(138,43,226,0.5);
   backdrop-filter: blur(10px);
+  transition: all 0.4s ease;
   position: relative;
-  transition: transform 0.3s, box-shadow 0.3s;
 }
 .card:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 0 40px rgba(200,132,252,0.6);
+  transform: scale(1.03);
+  box-shadow: 0 0 60px rgba(200,132,252,0.8);
+}
+.card h2 {
+  color: #c084fc;
+  margin-bottom: 1rem;
+  text-transform: capitalize;
 }
 
-/* announcement */
+/* ---------- ANNOUNCEMENTS ---------- */
 .announcement {
   background: rgba(255,255,255,0.05);
-  padding: 0.8rem 1rem;
-  border-left: 4px solid #c084fc;
-  border-radius: 0.5rem;
+  padding: 1rem 1.5rem;
+  border-left: 5px solid #c084fc;
+  border-radius: 0.6rem;
   margin-bottom: 1rem;
-  box-shadow: 0 0 15px rgba(200,132,252,0.3);
-  animation: announcementGlow 2s infinite alternate;
+  box-shadow: 0 0 20px rgba(200,132,252,0.3);
+  animation: float 3s ease-in-out infinite alternate;
 }
-@keyframes announcementGlow {
-  0% { box-shadow: 0 0 15px rgba(200,132,252,0.3); }
-  50% { box-shadow: 0 0 25px rgba(255,200,255,0.5); }
-  100% { box-shadow: 0 0 15px rgba(200,132,252,0.3); }
-}
+@keyframes float { from {transform: translateY(0);} to {transform: translateY(-5px);} }
 
-/* filters */
-.filters { display: flex; gap:0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+/* ---------- FILTERS ---------- */
+.filters {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
 .filters input, .filters select {
-  padding: 0.5rem 0.7rem;
+  padding: 0.5rem 0.8rem;
   border-radius: 0.5rem;
   border: none;
   font-size: 0.9rem;
-  background: rgba(60,0,100,0.6);
+  transition: all 0.3s;
+  background: rgba(60,0,120,0.5);
   color: #eee;
-  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(138,43,226,0.5);
 }
 .filters input:focus, .filters select:focus {
   outline: none;
-  box-shadow: 0 0 15px #c084fc;
+  transform: scale(1.05);
+  box-shadow: 0 0 25px #c084fc;
 }
 
-/* game list */
+/* ---------- GAME LIST ---------- */
 .game-list {
   display: grid;
-  gap: 0.8rem;
   grid-template-columns: 1fr;
-  animation: gameListFade 0.5s ease forwards;
+  gap: 1rem;
 }
-@keyframes gameListFade { from {opacity:0; transform: translateY(10px);} to {opacity:1; transform: translateY(0);} }
-
 .game-card {
   background: rgba(60,0,100,0.7);
-  padding: 1rem;
+  padding: 1.5rem;
   border-radius: 1rem;
   box-shadow: 0 0 15px rgba(138,43,226,0.4);
-  transition: transform 0.25s, box-shadow 0.3s;
   cursor: pointer;
-  position: relative;
+  transition: all 0.3s ease;
+  animation: popIn 0.5s ease forwards;
 }
 .game-card:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 0 35px rgba(200,132,252,0.6);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 0 40px rgba(200,132,252,0.7);
 }
+@keyframes popIn { from {opacity:0; transform: scale(0.95);} to {opacity:1; transform:scale(1);} }
 
-/* badges */
-.badges { margin-top:0.5rem; display: flex; gap:0.5rem; flex-wrap: wrap; }
+/* ---------- BADGES ---------- */
+.badges {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
 .badge {
-  padding: 0.3rem 0.6rem;
-  border-radius:0.4rem;
-  font-size:0.75rem;
-  font-weight:bold;
-  color:#111;
+  padding: 0.25rem 0.6rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: #111;
+  text-transform: capitalize;
+  transition: all 0.3s;
 }
-.badge.yellow { background:#ffd633; }
-.badge.green { background:#4dff4d; }
-.badge.red { background:#ff4d4d; }
+.badge.yellow { background: #ffd633; }
+.badge.green { background: #4dff4d; }
+.badge.red { background: #ff4d4d; }
 
-/* footer */
-footer { text-align:center; padding:2rem; color:#999; font-size:0.8rem; }
-
-/* responsive */
-@media(min-width:768px){
-  header h1{font-size:2.3rem;}
-  .hamburger{width:40px;height:32px;}
-  .menu button{font-size:1.1rem;padding:0.9rem 1.5rem;}
-  .filters input,.filters select{font-size:0.95rem;padding:0.55rem 0.8rem;}
-  .card{padding:1.8rem;}
-  .game-list{grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem;}
+/* ---------- SCROLL BOXES ---------- */
+.scroll-box {
+  background: rgba(30,0,60,0.8);
+  padding: 1rem;
+  border-radius: 0.8rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 0 20px rgba(255,200,255,0.3);
+  overflow-x: auto;
+  white-space: nowrap;
+  transition: all 0.3s ease;
 }
-@media(min-width:1024px){
-  header h1{font-size:2.5rem;}
-  .hamburger{width:45px;height:36px;}
-  .menu button{font-size:1.2rem;padding:1rem 1.6rem;}
-  .filters input,.filters select{font-size:1rem;padding:0.6rem 0.9rem;}
-  .card{padding:2rem;}
+.scroll-box::-webkit-scrollbar {
+  height: 6px;
+}
+.scroll-box::-webkit-scrollbar-thumb {
+  background: #c084fc;
+  border-radius: 3px;
+}
+.scroll-box:hover {
+  box-shadow: 0 0 50px rgba(200,132,252,0.7);
+  transform: scale(1.02);
+}
+
+/* ---------- COPY BUTTON ---------- */
+.copy-btn {
+  margin-bottom: 0.5rem;
+  background: #c084fc;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  font-weight: bold;
+  color: #111;
+  transition: all 0.3s ease;
+}
+.copy-btn:hover {
+  transform: scale(1.1);
+  background: #8a2be2;
+  box-shadow: 0 0 30px #c084fc;
+}
+
+/* ---------- FOOTER ---------- */
+footer {
+  text-align: center;
+  padding: 2rem;
+  color: #999;
+  font-size: 0.85rem;
+  animation: float 4s ease-in-out infinite alternate;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media(min-width: 768px) {
+  .game-list { grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:1rem; }
+  header h1 { font-size: 2.3rem; }
+}
+@media(min-width: 1024px) {
+  header h1 { font-size: 2.6rem; }
+  .card { padding: 2rem; }
+  .filters input, .filters select { font-size: 1rem; padding:0.55rem 1rem; }
+}
+
+/* ---------- MISC ---------- */
+.loader-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
