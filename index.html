@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Light Hub</title>
+<style>
+* { box-sizing:border-box; margin:0; padding:0; }
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: radial-gradient(circle at top, #1a0033, #050010 80%);
+  color:#eee;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+/* stars background */
+body::before {
+  content:"";
+  position:fixed;
+  top:0; left:0; right:0; bottom:0;
+  background: url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
+  opacity:0.3; z-index:-1;
+  animation: twinkle 12s infinite alternate;
+}
+@keyframes twinkle { from {opacity:0.2;} to {opacity:0.5;} }
+
+header {
+  background:rgba(40,0,70,0.85);
+  padding:1rem 2rem;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 0 25px #8a2be2;
+  position:sticky; top:0; z-index:5;
+  backdrop-filter: blur(8px);
+}
+header h1 {
+  font-size:1.6rem;
+  background:linear-gradient(90deg,#ffccff,#c084fc,#8a2be2);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  font-weight:bold;
+}
+.nav-tabs {
+  display:flex; gap:1rem;
+}
+.tab-btn {
+  display:flex; flex-direction:column; justify-content:center; align-items:center;
+  padding:0.5rem 1rem; border-radius:0.6rem;
+  cursor:pointer; transition:all 0.25s; font-weight:bold; background:rgba(60,0,100,0.7);
+}
+.tab-btn:hover, .tab-btn.active {
+  transform:scale(1.05);
+  box-shadow:0 0 25px #c084fc;
+  background:rgba(120,0,180,0.85);
+}
+.tab-icon {
+  width:25px; height:3px; background:#eee; margin:3px 0; border-radius:2px;
+}
+
+/* pages */
+.page { display:none; padding:2rem; animation:fade 0.5s; }
+.active-page { display:block; }
+@keyframes fade { from{opacity:0;} to{opacity:1;} }
+
+/* cards */
+.card {
+  background:rgba(40,0,70,0.6);
+  border-radius:1rem; padding:1.5rem;
+  margin:1rem 0;
+  box-shadow:0 0 25px rgba(160,100,255,0.4);
+  backdrop-filter:blur(8px);
+  animation:pop 0.4s;
+}
+@keyframes pop { from{transform:scale(0.97);opacity:0;} to{transform:scale(1);opacity:1;} }
+
+h2 { color:#c084fc; margin-bottom:1rem; }
+
+/* game list */
+.game-list { display:grid; gap:1rem; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); }
+.game-card {
+  background:rgba(60,0,100,0.7); padding:1.2rem;
+  border-radius:1rem; box-shadow:0 0 20px rgba(138,43,226,0.4);
+  transition:transform 0.25s, box-shadow 0.3s;
+  cursor:pointer;
+}
+.game-card:hover { transform:translateY(-4px); box-shadow:0 0 30px rgba(200,132,252,0.6); }
+.badges { margin-top:0.7rem; display:flex; gap:0.5rem; flex-wrap:wrap; }
+.badge { padding:0.3rem 0.6rem; border-radius:0.4rem; font-size:0.8rem; font-weight:bold; color:#111; }
+.badge.yellow { background:#ffd633; }
+.badge.green { background:#4dff4d; }
+.badge.red { background:#ff4d4d; }
+
+/* filters + search */
+.filters { display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:1rem; }
+.filters select, .filters input {
+  padding:0.5rem 0.7rem; border-radius:0.5rem; border:none; font-size:0.9rem;
+}
+
+footer { text-align:center; padding:2rem; color:#999; font-size:0.9rem; }
+</style>
+</head>
+<body>
+<header>
+<h1>Light Hub</h1>
+<div class="nav-tabs">
+  <div class="tab-btn active" data-page="home">
+    <div class="tab-icon"></div>
+    <div class="tab-icon"></div>
+    <div class="tab-icon"></div>
+    Home
+  </div>
+  <div class="tab-btn" data-page="scripts">
+    <div class="tab-icon"></div>
+    <div class="tab-icon"></div>
+    <div class="tab-icon"></div>
+    Scripts
+  </div>
+  <div class="tab-btn" data-page="keysystem">
+    <div class="tab-icon"></div>
+    <div class="tab-icon"></div>
+    <div class="tab-icon"></div>
+    Key System
+  </div>
+</div>
+</header>
+
+<section id="home" class="page active-page">
+  <div class="card">
+    <h2>Welcome to Light Hub</h2>
+    <p>Explore the universe of Roblox scripts. Browse supported games, check features, and stay updated with the latest changelogs.</p>
+  </div>
+</section>
+
+<section id="scripts" class="page">
+  <div class="card">
+    <h2>Supported Games</h2>
+    <div class="filters">
+      <input type="text" id="searchBox" placeholder="Search game...">
+      <select id="filterKey">
+        <option value="">All Types</option>
+        <option value="key system">Key System</option>
+        <option value="keyless">Keyless</option>
+      </select>
+      <select id="filterStatus">
+        <option value="">All Status</option>
+        <option value="undetected">Undetected</option>
+        <option value="detected">Detected</option>
+      </select>
+    </div>
+    <div class="game-list" id="gameList"></div>
+  </div>
+  <div id="gameDetails" class="card" style="display:none;"></div>
+</section>
+
+<section id="keysystem" class="page">
+  <div class="card">
+    <h2>Key System</h2>
+    <p>Coming soon ✨</p>
+  </div>
+</section>
+
+<footer>Light Hub © 2025</footer>
+
+<script>
+// game database
+const scripts = [
+  { name:"Murder Mystery 2", loader:"loadstring(game:HttpGet('https://example.com/mm2loader'))()", keyInfo:"Get your key at https://light-hub.com/key", features:["ESP","Aimbot","Auto Farm"], changelog:["v1.2 - Added Auto Farm","v1.1 - Improved ESP","v1.0 - Initial release"], type:"key system", status:"undetected" },
+  { name:"Pet Simulator X", loader:"loadstring(game:HttpGet('https://example.com/psxloader'))()", keyInfo:"Get your key at https://light-hub.com/key", features:["Auto Hatch","Auto Farm","Pet Dupe"], changelog:["v2.0 - Major UI Update","v1.5 - Fixed Pet Dupe","v1.0 - Initial release"], type:"keyless", status:"detected" }
+];
+
+// navigation tabs
+const tabs=document.querySelectorAll(".tab-btn");
+const pages=document.querySelectorAll(".page");
+tabs.forEach(tab=>{
+  tab.addEventListener("click",()=>{
+    tabs.forEach(t=>t.classList.remove("active"));
+    tab.classList.add("active");
+    const pageId=tab.dataset.page;
+    pages.forEach(p=>p.classList.remove("active-page"));
+    document.getElementById(pageId).classList.add("active-page");
+  });
+});
+
+// scripts rendering
+const gameList=document.getElementById("gameList");
+const gameDetails=document.getElementById("gameDetails");
+const searchBox=document.getElementById("searchBox");
+const filterKey=document.getElementById("filterKey");
+const filterStatus=document.getElementById("filterStatus");
+
+function renderGames(){
+  gameList.innerHTML="";
+  const query=searchBox.value.toLowerCase();
+  const keyFilter=filterKey.value;
+  const statusFilter=filterStatus.value;
+  scripts.filter(g=>g.name.toLowerCase().includes(query) && (keyFilter===""||g.type===keyFilter) && (statusFilter===""||g.status===statusFilter)).forEach((g,i)=>{
+    const card=document.createElement("div");
+    card.className="game-card";
+    card.innerHTML=`<h3>${g.name}</h3><div class="badges"><span class="badge yellow">${g.type}</span><span class="badge ${g.status==="undetected"?"green":"red"}">${g.status}</span></div>`;
+    card.onclick=()=>showGame(i);
+    gameList.appendChild(card);
+  });
+}
+
+function showGame(index){
+  const g=scripts[index];
+  gameDetails.style.display="block";
+  gameDetails.innerHTML=`
+    <h2>${g.name}</h2>
+    <p><strong>Loader:</strong> <code>${g.loader}</code></p>
+    <p><strong>How to get key:</strong> ${g.keyInfo}</p>
+    <h3>Features</h3><ul>${g.features.map(f=>`<li>${f}</li>`).join("")}</ul>
+    <h3>Changelog</h3><ul>${g.changelog.map(c=>`<li>${c}</li>`).join("")}</ul>
+  `;
+  gameDetails.scrollIntoView({behavior:"smooth"});
+}
+
+[searchBox,filterKey,filterStatus].forEach(el=>{ el.addEventListener("input",renderGames); el.addEventListener("change",renderGames); });
+renderGames();
+</script>
+</body>
+</html>
