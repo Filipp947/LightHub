@@ -4,285 +4,31 @@
 <meta charset="UTF-8">
 <title>Light Hub</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{
-  font-family:'Segoe UI',sans-serif;
-  background: radial-gradient(circle at top, #1a0033, #050010 80%);
-  color:#eee;
-  min-height:100vh;
-  overflow-x:hidden;
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* stars background */
-body::before{
-  content:"";
-  position:fixed; top:0; left:0; right:0; bottom:0;
-  background:url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
-  opacity:0.3; z-index:-1;
-  animation: twinkle 12s infinite alternate;
-}
-@keyframes twinkle{from{opacity:0.2;}to{opacity:0.5;}}
-
-/* header */
-header{
-  background:rgba(40,0,70,0.85);
-  padding:1rem;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  box-shadow:0 0 25px #8a2be2;
-  position:sticky; top:0; z-index:10;
-  backdrop-filter:blur(8px);
-  border-radius:0 0 15px 15px;
-}
-header h1{
-  font-size:1.5rem;
-  background:linear-gradient(90deg,#ffccff,#c084fc,#8a2be2);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  font-weight:bold;
-  position:relative;
-  animation:headerGlow 2s infinite alternate;
-}
-@keyframes headerGlow{from{text-shadow:0 0 5px #c084fc;}to{text-shadow:0 0 15px #ffccff;}}
-
-/* hamburger */
-.hamburger{
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  cursor:pointer;
-  -webkit-tap-highlight-color: transparent;
-  width:28px;
-  height:22px;
-  transition:transform 0.3s;
-}
-.hamburger.active{transform:rotate(90deg);}
-.hamburger span{
-  display:block;
-  background:#eee;
-  border-radius:2px;
-  height:3px;
-  width:100%;
-  transition:all 0.3s;
-}
-
-/* menu */
-.menu{
-  position:absolute;
-  top:65px;
-  right:1rem;
-  background:rgba(50,0,100,0.95);
-  border-radius:0.8rem;
-  overflow:hidden;
-  display:none;
-  flex-direction:column;
-  z-index:20;
-  animation:menuFade 0.4s ease forwards;
-}
-@keyframes menuFade{from{opacity:0; transform:translateY(-10px);}to{opacity:1;transform:translateY(0);}}
-.menu button{
-  padding:1rem 1.2rem;
-  background:none;
-  border:none;
-  color:#eee;
-  text-align:left;
-  font-weight:bold;
-  font-size:1rem;
-  cursor:pointer;
-  transition:all 0.25s;
-  outline:none;
-}
-.menu button:hover{
-  background:rgba(200,132,252,0.2);
-  transform:scale(1.05);
-}
-
-/* pages */
-.page{display:none;padding:1rem;animation:fade 0.5s;}
-.active-page{display:block;}
-@keyframes fade{from{opacity:0;}to{opacity:1;}}
-
-/* card */
-.card{
-  background:rgba(40,0,70,0.6);
-  border-radius:1rem;
-  padding:1rem;
-  margin:1rem 0;
-  box-shadow:0 0 20px rgba(160,100,255,0.4);
-  backdrop-filter:blur(8px);
-  animation:pop 0.4s;
-  position:relative;
-}
-.card:hover{transform:scale(1.02);box-shadow:0 0 35px rgba(200,132,252,0.6);transition:0.3s;}
-@keyframes pop{from{transform:scale(0.97);opacity:0;}to{transform:scale(1);opacity:1;}}
-h2{color:#c084fc;margin-bottom:0.8rem;}
-
-/* filters + search */
-.filters{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;}
-.filters select,.filters input{
-  padding:0.4rem 0.6rem;border-radius:0.5rem;border:none;font-size:0.85rem;
-  background:rgba(80,0,120,0.6); color:#c084fc;
-}
-.filters input::placeholder{color:#d0a6ff;}
-
-/* game list */
-.game-list{display:grid;gap:0.8rem;grid-template-columns:1fr;}
-.game-card{
-  background:rgba(60,0,100,0.7); padding:1rem;
-  border-radius:1rem; box-shadow:0 0 15px rgba(138,43,226,0.4);
-  transition:transform 0.25s, box-shadow 0.3s, opacity 0.5s;
-  cursor:pointer;
-  position:relative;
-  opacity:0;
-}
-.game-card.show{opacity:1; animation:pop 0.5s;}
-.game-card:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 30px rgba(200,132,252,0.6);}
-.badges{margin-top:0.5rem;display:flex;gap:0.5rem;flex-wrap:wrap;}
-.badge{padding:0.2rem 0.5rem;border-radius:0.4rem;font-size:0.75rem;font-weight:bold;color:#111;}
-.badge.yellow{background:#ffd633;}
-.badge.green{background:#4dff4d;}
-.badge.red{background:#ff4d4d;}
-
-/* loader / changelog box */
-.scroll-box{
-  background:rgba(30,0,60,0.8);
-  padding:1rem;
-  border-radius:0.8rem;
-  margin-bottom:1rem;
-  box-shadow:0 0 20px rgba(255,200,255,0.3);
-  overflow-x:auto;
-  white-space:nowrap;
-  position:relative;
-  transition:all 0.3s ease;
-}
-.scroll-box::-webkit-scrollbar{height:6px;}
-.scroll-box::-webkit-scrollbar-thumb{background:#c084fc;border-radius:3px;}
-
-/* copy button outside */
-.copy-btn{
-  margin-bottom:0.5rem;
-  background:#c084fc;
-  border:none;
-  padding:0.4rem 0.8rem;
-  border-radius:0.5rem;
-  cursor:pointer;
-  color:#111;
-  font-weight:bold;
-  font-size:0.85rem;
-  transition:all 0.3s;
-}
-.copy-btn:hover{background:#8a2be2; transform:scale(1.05);}
-.copy-btn:active{transform:scale(0.95);}
-
-/* announcement */
-.announcement{
-  background:rgba(255, 255, 255, 0.1);
-  padding:0.7rem 1rem;
-  border-left:4px solid #c084fc;
-  border-radius:0.5rem;
-  margin-bottom:1rem;
-  box-shadow:0 0 15px rgba(200,132,252,0.3);
-}
-
-/* footer */
-footer{text-align:center;padding:2rem;color:#999;font-size:0.8rem;}
-
-/* script page */
-.script-container{
-  display:flex;
-  flex-direction:column;
-  gap:1.5rem;
-  animation:fadeUp 0.6s ease forwards;
-}
-@keyframes fadeUp{from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);}}
-
-.script-title{
-  color:#ffccff;
-  font-size:2rem;
-  text-align:center;
-  text-shadow:0 0 15px #c084fc,0 0 25px #8a2be2;
-  animation:textGlow 2s infinite alternate;
-}
-@keyframes textGlow{
-  from{text-shadow:0 0 10px #c084fc,0 0 20px #8a2be2;}
-  to{text-shadow:0 0 20px #ffccff,0 0 35px #c084fc;}
-}
-
-.glow-box{
-  background:rgba(40,0,70,0.75);
-  border-radius:1rem;
-  padding:1rem 1.5rem;
-  box-shadow:0 0 25px rgba(138,43,226,0.4);
-  backdrop-filter:blur(10px);
-  transition:all 0.35s ease;
-  position:relative;
-  animation:boxFade 0.5s ease forwards;
-}
-.glow-box:hover{
-  box-shadow:0 0 45px rgba(200,132,252,0.7);
-  transform:scale(1.02);
-}
-@keyframes boxFade{from{opacity:0; transform:translateY(15px);}to{opacity:1; transform:translateY(0);}}
-
-.glow-box h3{
-  color:#c084fc;
-  margin-bottom:0.8rem;
-  text-shadow:0 0 10px #c084fc;
-}
-
-/* list animations */
-.scroll-box li{
-  opacity:0; transform:translateX(-20px);
-  animation:fadeSlide 0.5s forwards;
-}
-@keyframes fadeSlide{from{opacity:0; transform:translateX(-20px);}to{opacity:1; transform:translateX(0);}}
-
-.back-btn{
-  align-self:flex-start;
-  margin-bottom:1rem;
-}
-
-/* responsive */
-@media(min-width:768px){
-  header h1{font-size:2rem;}
-  .hamburger{width:30px;height:25px;}
-  .menu button{font-size:1.1rem;padding:0.8rem 1.5rem;}
-  .filters select,.filters input{font-size:0.95rem;padding:0.5rem 0.8rem;}
-  .card{padding:1.5rem;}
-  .game-list{grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem;}
-}
-@media(min-width:1024px){
-  header h1{font-size:2.3rem;}
-  .hamburger{width:35px;height:28px;}
-  .menu button{font-size:1.2rem;padding:0.9rem 1.6rem;}
-  .filters select,.filters input{font-size:1rem;padding:0.55rem 0.9rem;}
-  .card{padding:2rem;}
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
-<h1>Light Hub</h1>
-<div class="hamburger" id="hamburger">
-  <span></span>
-  <span></span>
-  <span></span>
-</div>
-<div class="menu" id="menu">
-  <button data-page="home">Home</button>
-  <button data-page="scripts">Scripts</button>
-  <button data-page="keysystem">Key System</button>
-  <button data-page="discord">Discord</button>
-</div>
+  <h1>Light Hub</h1>
+  <div class="hamburger" id="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <div class="menu" id="menu">
+    <button data-page="home">Home</button>
+    <button data-page="scripts">Scripts</button>
+    <button data-page="keysystem">Key System</button>
+    <button data-page="discord">Discord</button>
+  </div>
 </header>
 
 <section id="home" class="page active-page">
   <div class="announcement">🌟 New scripts added today! Check out the latest updates.</div>
-  <div class="card"><h2>Welcome to Light Hub</h2><p>Explore the universe of Roblox scripts. Browse supported games, check features, and stay updated with the latest changelogs.</p></div>
+  <div class="card">
+    <h2>Welcome to Light Hub</h2>
+    <p>Explore the universe of Roblox scripts. Browse supported games, check features, and stay updated with the latest changelogs.</p>
+  </div>
 </section>
 
 <section id="scripts" class="page">
@@ -310,126 +56,25 @@ footer{text-align:center;padding:2rem;color:#999;font-size:0.8rem;}
 </section>
 
 <section id="discord" class="page">
-  <div class="card"><h2>Discord</h2><p>Join our community on Discord for updates and support!</p></div>
+  <div class="card"><h2>Join Discord</h2><p>Click <a href="#" target="_blank">here</a> to join our community!</p></div>
 </section>
 
 <section id="scriptPage" class="page">
-  <button id="backBtn" class="copy-btn back-btn">← Back</button>
+  <button id="backBtn" class="copy-btn">← Back</button>
   <div class="announcement" id="scriptAnnouncement"></div>
-  <div class="script-container">
-    <h1 id="scriptName" class="script-title"></h1>
-    <div class="glow-box">
-      <h3>Loader</h3>
-      <div class="scroll-box" id="scriptLoader"></div>
-      <button class="copy-btn" id="copyLoader">Copy Loader</button>
-    </div>
-    <div class="glow-box">
-      <h3>Features</h3>
-      <div class="scroll-box"><ul id="scriptFeatures"></ul></div>
-    </div>
-    <div class="glow-box">
-      <h3>Changelog</h3>
-      <div class="scroll-box"><ul id="scriptChangelog"></ul></div>
-    </div>
+  <div class="card">
+    <h2 id="scriptName"></h2>
+    <button class="copy-btn" id="copyLoader">Copy Loader</button>
+    <div class="scroll-box"><code id="scriptLoader"></code></div>
+    <h3>Features</h3>
+    <div class="scroll-box"><ul id="scriptFeatures"></ul></div>
+    <h3>Changelog</h3>
+    <div class="scroll-box"><ul id="scriptChangelog"></ul></div>
   </div>
 </section>
 
 <footer>Light Hub © 2025</footer>
 
-<script>
-// hamburger toggle
-const hamburger=document.getElementById("hamburger");
-const menu=document.getElementById("menu");
-hamburger.addEventListener("click",()=>{
-  hamburger.classList.toggle("active");
-  menu.style.display=(menu.style.display==="flex"?"none":"flex");
-});
-
-// script database
-const scripts=[
-  { name:"99 Nights in the Forest", loader:"loadstring(game:HttpGet('https://raw.githubusercontent.com/Filipp947/LightHub/refs/heads/main/99nightsintheforestloader.lua'))()", announcement:"Bypassed Latest Anticheat!", features:["Coming Soon!","Amazing Visuals!","Fast Load"], changelog:["Bypassed Latest Anticheat!","Fixed Lag Issues!"], type:"Key System", status:"Undetected"}
-];
-
-// page navigation
-const pageButtons=document.querySelectorAll("#menu button");
-const pages=document.querySelectorAll(".page");
-pageButtons.forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    pages.forEach(p=>p.classList.remove("active-page"));
-    document.getElementById(btn.dataset.page).classList.add("active-page");
-    menu.style.display="none";
-    hamburger.classList.remove("active");
-  });
-});
-
-// scripts list rendering
-const gameList=document.getElementById("gameList");
-const searchBox=document.getElementById("searchBox");
-const filterKey=document.getElementById("filterKey");
-const filterStatus=document.getElementById("filterStatus");
-
-function renderGames(){
-  gameList.innerHTML="";
-  const query=searchBox.value.toLowerCase();
-  const keyFilter=filterKey.value.toLowerCase();
-  const statusFilter=filterStatus.value.toLowerCase();
-  scripts.filter(g=>g.name.toLowerCase().includes(query) && (keyFilter===""||g.type.toLowerCase()===keyFilter) && (statusFilter===""||g.status.toLowerCase()===statusFilter))
-    .forEach((g,i)=>{
-      const card=document.createElement("div");
-      card.className="game-card";
-      card.innerHTML=`<h3>${g.name}</h3><div class="badges"><span class="badge yellow">${g.type}</span><span class="badge ${g.status.toLowerCase()==="undetected"?"green":"red"}">${g.status}</span></div>`;
-      card.onclick=()=>openScriptPage(i);
-      gameList.appendChild(card);
-      setTimeout(()=>card.classList.add("show"),50*i);
-  });
-}
-[searchBox,filterKey,filterStatus].forEach(el=>{ el.addEventListener("input",renderGames); el.addEventListener("change",renderGames); });
-renderGames();
-
-// individual script page
-const scriptPage=document.getElementById("scriptPage");
-const backBtn=document.getElementById("backBtn");
-const scriptName=document.getElementById("scriptName");
-const scriptLoader=document.getElementById("scriptLoader");
-const scriptFeatures=document.getElementById("scriptFeatures");
-const scriptChangelog=document.getElementById("scriptChangelog");
-const copyLoader=document.getElementById("copyLoader");
-const scriptAnnouncement=document.getElementById("scriptAnnouncement");
-
-function openScriptPage(index){
-  const g=scripts[index];
-  pages.forEach(p=>p.classList.remove("active-page"));
-  scriptPage.classList.add("active-page");
-
-  scriptName.textContent=g.name;
-  scriptLoader.textContent=g.loader;
-  scriptFeatures.innerHTML="";
-  g.features.forEach((f,i)=>{
-    const li=document.createElement("li"); li.textContent=f;
-    li.style.animationDelay=(i*0.1)+"s";
-    scriptFeatures.appendChild(li);
-  });
-  scriptChangelog.innerHTML="";
-  g.changelog.forEach((c,i)=>{
-    const li=document.createElement("li"); li.textContent=c;
-    li.style.animationDelay=(i*0.1)+"s";
-    scriptChangelog.appendChild(li);
-  });
-  scriptAnnouncement.textContent=g.announcement || "";
-}
-
-// back button
-backBtn.addEventListener("click",()=>{
-  pages.forEach(p=>p.classList.remove("active-page"));
-  document.getElementById("scripts").classList.add("active-page");
-});
-
-// copy loader
-copyLoader.addEventListener("click", () => {
-  navigator.clipboard.writeText(scriptLoader.textContent);
-  copyLoader.textContent="Copied!";
-  setTimeout(()=>copyLoader.textContent="Copy Loader",1500);
-});
-</script>
+<script src="main.js"></script>
 </body>
 </html>
