@@ -264,8 +264,16 @@ const menu=document.getElementById("menu");
 hamburger.addEventListener("click",()=>{menu.style.display=(menu.style.display==="flex"?"none":"flex");menu.style.flexDirection="column";});
 
 // game database
-const scripts=[
-  { name:"99 Nights in the forest", loader:"loadstring(game:HttpGet("https://raw.githubusercontent.com/Filipp947/LightHub/refs/heads/main/99nightsintheforestloader.lua"))()", announcement:"Bypassed Latest Anticheat!", features:["Coming soon!"], changelog:["Bypassed Latest anticheat!\nFixed Lag Issues!"], type:"key system", status:"undetected"}
+const scripts = [
+  { 
+    name: "99 Nights in the forest", 
+    loader: "loadstring(game:HttpGet('https://raw.githubusercontent.com/Filipp947/LightHub/refs/heads/main/99nightsintheforestloader.lua'))()", 
+    announcement: "Bypassed Latest Anticheat!", 
+    features: ["Coming soon!"], 
+    changelog: ["Bypassed Latest anticheat!", "Fixed Lag Issues!"], 
+    type: "key system", 
+    status: "undetected"
+  }
 ];
 
 // page navigation
