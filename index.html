@@ -5,6 +5,7 @@
 <title>Light Hub</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
+/* reset & body */
 *{box-sizing:border-box;margin:0;padding:0;}
 body{
   font-family:'Segoe UI',sans-serif;
@@ -55,9 +56,9 @@ header h1::after{
   flex-direction:column;
   justify-content:space-between;
   cursor:pointer;
-  -webkit-tap-highlight-color: transparent;
   width:28px;
   height:22px;
+  z-index:15;
 }
 .hamburger span{
   display:block;
@@ -65,8 +66,12 @@ header h1::after{
   border-radius:2px;
   height:3px;
   width:100%;
-  transition:all 0.3s;
+  transition:0.35s cubic-bezier(0.68,-0.55,0.265,1.55);
 }
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
+.hamburger.active span:nth-child(2){opacity:0;}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
+.hamburger:hover span{background:linear-gradient(90deg,#ffccff,#c084fc,#8a2be2);box-shadow:0 0 8px #c084fc;}
 
 /* menu */
 .menu{
@@ -79,6 +84,7 @@ header h1::after{
   display:none;
   flex-direction:column;
   z-index:20;
+  box-shadow:0 0 25px #c084fc;
 }
 .menu button{
   padding:1rem 1.2rem;
@@ -91,6 +97,7 @@ header h1::after{
   cursor:pointer;
   transition:all 0.25s;
   outline:none;
+  -webkit-tap-highlight-color: transparent;
 }
 .menu button:hover{
   background:rgba(200,132,252,0.2);
@@ -98,8 +105,19 @@ header h1::after{
 }
 
 /* pages */
-.page{display:none;padding:1rem;animation:fade 0.5s;}
-.active-page{display:block;}
+.page{
+  display:none;
+  padding:1rem;
+  animation:fade 0.5s;
+  opacity:0;
+  transform:translateY(8px);
+  transition:all 0.4s ease;
+}
+.active-page{
+  display:block;
+  opacity:1;
+  transform:translateY(0);
+}
 @keyframes fade{from{opacity:0;}to{opacity:1;}}
 
 /* card */
@@ -113,7 +131,11 @@ header h1::after{
   animation:pop 0.4s;
   position:relative;
 }
-.card:hover{transform:scale(1.02);box-shadow:0 0 35px rgba(200,132,252,0.6);transition:0.3s;}
+.card:hover{
+  transform:scale(1.02);
+  box-shadow:0 0 35px rgba(200,132,252,0.6);
+  transition:0.3s;
+}
 @keyframes pop{from{transform:scale(0.97);opacity:0;}to{transform:scale(1);opacity:1;}}
 h2{color:#c084fc;margin-bottom:0.8rem;}
 
@@ -147,10 +169,11 @@ h2{color:#c084fc;margin-bottom:0.8rem;}
   overflow-x:auto;
   white-space:nowrap;
   position:relative;
+  transition:box-shadow 0.3s ease, transform 0.3s ease;
 }
 .scroll-box::-webkit-scrollbar{height:6px;}
 .scroll-box::-webkit-scrollbar-thumb{background:#c084fc;border-radius:3px;}
-.scroll-box:hover{box-shadow:0 0 35px rgba(200,132,252,0.6);transition:0.3s;}
+.scroll-box:hover{transform:scale(1.01);box-shadow:0 0 45px rgba(200,132,252,0.7);}
 
 /* copy button outside */
 .copy-btn{
@@ -163,6 +186,7 @@ h2{color:#c084fc;margin-bottom:0.8rem;}
   color:#111;
   font-weight:bold;
   font-size:0.85rem;
+  transition:0.3s;
 }
 .copy-btn:hover{background:#8a2be2;}
 
@@ -258,41 +282,61 @@ footer{text-align:center;padding:2rem;color:#999;font-size:0.8rem;}
 <footer>Light Hub © 2025</footer>
 
 <script>
+// optional background image for scripts page
+const scriptsBg = ""; // add URL if desired
+const scriptsSection = document.getElementById("scripts");
+if (scriptsBg) {
+  scriptsSection.style.background = `url('${scriptsBg}') center/cover no-repeat`;
+  scriptsSection.style.transition = "background 0.5s";
+}
+
 // hamburger toggle
 const hamburger=document.getElementById("hamburger");
 const menu=document.getElementById("menu");
-hamburger.addEventListener("click",()=>{menu.style.display=(menu.style.display==="flex"?"none":"flex");menu.style.flexDirection="column";});
+let open=false;
+hamburger.addEventListener("click",()=>{
+  open=!open;
+  menu.style.display=open?"flex":"none";
+  menu.style.flexDirection="column";
+  hamburger.classList.toggle("active",open);
+});
 
-// game database
-const scripts = [
-  { 
-    name: "99 Nights in the forest", 
-    loader: "loadstring(game:HttpGet('https://raw.githubusercontent.com/Filipp947/LightHub/refs/heads/main/99nightsintheforestloader.lua'))()", 
-    announcement: "Bypassed Latest Anticheat!", 
-    features: ["Coming soon!"], 
-    changelog: ["Bypassed Latest anticheat!", "Fixed Lag Issues!"], 
-    type: "key system", 
-    status: "undetected"
-  }
+// capitalize helper
+function capitalizeFirst(str){return str.replace(/\b\w/g,c=>c.toUpperCase());}
+
+// add Discord tab
+const discordBtn=document.createElement("button");
+discordBtn.textContent="Discord";
+discordBtn.dataset.page="discord";
+menu.appendChild(discordBtn);
+
+// Discord page
+const discordSection=document.createElement("section");
+discordSection.id="discord";
+discordSection.className="page";
+discordSection.innerHTML=`<div class="card"><h2>Discord</h2><p>Join our Discord server for updates, announcements, and support! ✨</p></div>`;
+document.body.insertBefore(discordSection,document.querySelector("footer"));
+
+// scripts database
+const scripts=[
+  { name:"99 Nights in the forest", loader:"loadstring(game:HttpGet('https://raw.githubusercontent.com/Filipp947/LightHub/refs/heads/main/99nightsintheforestloader.lua'))()", announcement:"Bypassed Latest Anticheat!", features:["Coming soon!"], changelog:["Bypassed Latest anticheat!","Fixed Lag Issues!"], type:"key system", status:"undetected"}
 ];
 
 // page navigation
 const pageButtons=document.querySelectorAll("#menu button");
 const pages=document.querySelectorAll(".page");
-pageButtons.forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    pages.forEach(p=>p.classList.remove("active-page"));
-    document.getElementById(btn.dataset.page).classList.add("active-page");
-    menu.style.display="none";
-  });
-});
+pageButtons.forEach(btn=>{btn.addEventListener("click",()=>{
+  pages.forEach(p=>p.classList.remove("active-page"));
+  document.getElementById(btn.dataset.page).classList.add("active-page");
+  menu.style.display="none";
+  hamburger.classList.remove("active"); open=false;
+});});
 
-// scripts list rendering
+// render games
 const gameList=document.getElementById("gameList");
 const searchBox=document.getElementById("searchBox");
 const filterKey=document.getElementById("filterKey");
 const filterStatus=document.getElementById("filterStatus");
-
 function renderGames(){
   gameList.innerHTML="";
   const query=searchBox.value.toLowerCase();
@@ -301,12 +345,11 @@ function renderGames(){
   scripts.filter(g=>g.name.toLowerCase().includes(query)&&(keyFilter===""||g.type===keyFilter)&&(statusFilter===""||g.status===statusFilter)).forEach((g,i)=>{
     const card=document.createElement("div");
     card.className="game-card";
-    card.innerHTML=`<h3>${g.name}</h3><div class="badges"><span class="badge yellow">${g.type}</span><span class="badge ${g.status==="undetected"?"green":"red"}">${g.status}</span></div>`;
+    card.innerHTML=`<h3>${g.name}</h3><div class="badges"><span class="badge yellow">${capitalizeFirst(g.type)}</span><span class="badge ${g.status==="undetected"?"green":"red"}">${capitalizeFirst(g.status)}</span></div>`;
     card.onclick=()=>openScriptPage(i);
     gameList.appendChild(card);
   });
 }
-
 [searchBox,filterKey,filterStatus].forEach(el=>{ el.addEventListener("input",renderGames); el.addEventListener("change",renderGames); });
 renderGames();
 
@@ -328,16 +371,16 @@ function openScriptPage(index){
   scriptLoader.textContent=g.loader;
   scriptFeatures.innerHTML=g.features.map(f=>`<li>${f}</li>`).join("");
   scriptChangelog.innerHTML=g.changelog.map(c=>`<li>${c}</li>`).join("");
-  scriptAnnouncement.textContent=g.announcement || "";
+  scriptAnnouncement.textContent=g.announcement||"";
 }
 
 backBtn.addEventListener("click",()=>{pages.forEach(p=>p.classList.remove("active-page")); document.getElementById("scripts").classList.add("active-page");});
 
-// copy button
-copyLoader.addEventListener("click", () => {
+// copy loader
+copyLoader.addEventListener("click",()=>{
   navigator.clipboard.writeText(scriptLoader.textContent);
-  copyLoader.textContent = "Copied!";
-  setTimeout(() => copyLoader.textContent = "Copy Loader", 1500);
+  copyLoader.textContent="Copied!";
+  setTimeout(()=>copyLoader.textContent="Copy Loader",1500);
 });
 </script>
 </body>
