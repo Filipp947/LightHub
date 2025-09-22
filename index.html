@@ -42,7 +42,12 @@ header h1{
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
   font-weight:bold;
+  position:relative;
 }
+header h1::after{
+  content:'✨'; position:absolute; animation:starTwinkle 2s infinite alternate; top:-5px; right:-20px;
+}
+@keyframes starTwinkle{from{opacity:0.3;}to{opacity:1;}}
 
 /* hamburger */
 .hamburger{
@@ -106,7 +111,9 @@ header h1{
   box-shadow:0 0 20px rgba(160,100,255,0.4);
   backdrop-filter:blur(8px);
   animation:pop 0.4s;
+  position:relative;
 }
+.card:hover{transform:scale(1.02);box-shadow:0 0 35px rgba(200,132,252,0.6);transition:0.3s;}
 @keyframes pop{from{transform:scale(0.97);opacity:0;}to{transform:scale(1);opacity:1;}}
 h2{color:#c084fc;margin-bottom:0.8rem;}
 
@@ -121,36 +128,41 @@ h2{color:#c084fc;margin-bottom:0.8rem;}
   border-radius:1rem; box-shadow:0 0 15px rgba(138,43,226,0.4);
   transition:transform 0.25s, box-shadow 0.3s;
   cursor:pointer;
+  position:relative;
 }
-.game-card:hover{transform:translateY(-3px);box-shadow:0 0 25px rgba(200,132,252,0.6);}
+.game-card:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 30px rgba(200,132,252,0.6);}
 .badges{margin-top:0.5rem;display:flex;gap:0.5rem;flex-wrap:wrap;}
 .badge{padding:0.2rem 0.5rem;border-radius:0.4rem;font-size:0.75rem;font-weight:bold;color:#111;}
 .badge.yellow{background:#ffd633;}
 .badge.green{background:#4dff4d;}
 .badge.red{background:#ff4d4d;}
 
-/* script page loader box */
-.loader-box{
+/* loader / changelog box */
+.scroll-box{
   background:rgba(30,0,60,0.8);
   padding:1rem;
   border-radius:0.8rem;
   margin-bottom:1rem;
   box-shadow:0 0 20px rgba(255,200,255,0.3);
-  word-wrap:break-word;
+  overflow-x:auto;
+  white-space:nowrap;
   position:relative;
 }
+.scroll-box::-webkit-scrollbar{height:6px;}
+.scroll-box::-webkit-scrollbar-thumb{background:#c084fc;border-radius:3px;}
+.scroll-box:hover{box-shadow:0 0 35px rgba(200,132,252,0.6);transition:0.3s;}
+
+/* copy button outside */
 .copy-btn{
-  position:absolute;
-  top:10px;
-  right:10px;
+  margin-bottom:0.5rem;
   background:#c084fc;
   border:none;
-  padding:0.3rem 0.6rem;
+  padding:0.4rem 0.8rem;
   border-radius:0.5rem;
   cursor:pointer;
   color:#111;
   font-weight:bold;
-  font-size:0.8rem;
+  font-size:0.85rem;
 }
 .copy-btn:hover{background:#8a2be2;}
 
@@ -230,17 +242,16 @@ footer{text-align:center;padding:2rem;color:#999;font-size:0.8rem;}
 </section>
 
 <section id="scriptPage" class="page">
-  <button id="backBtn" style="margin-bottom:1rem;padding:0.5rem 1rem;background:#c084fc;border:none;border-radius:0.6rem;cursor:pointer;">← Back</button>
+  <button id="backBtn" class="copy-btn">← Back</button>
+  <div class="announcement" id="scriptAnnouncement"></div>
   <div class="card">
     <h2 id="scriptName"></h2>
-    <div class="loader-box">
-      <button class="copy-btn" id="copyLoader">Copy</button>
-      <code id="scriptLoader" style="white-space:pre-wrap;"></code>
-    </div>
+    <button class="copy-btn" id="copyLoader">Copy Loader</button>
+    <div class="scroll-box"><code id="scriptLoader"></code></div>
     <h3>Features</h3>
-    <ul id="scriptFeatures"></ul>
+    <div class="scroll-box"><ul id="scriptFeatures"></ul></div>
     <h3>Changelog</h3>
-    <ul id="scriptChangelog"></ul>
+    <div class="scroll-box"><ul id="scriptChangelog"></ul></div>
   </div>
 </section>
 
@@ -254,8 +265,8 @@ hamburger.addEventListener("click",()=>{menu.style.display=(menu.style.display==
 
 // game database
 const scripts=[
-  { name:"Murder Mystery 2", loader:"loadstring(game:HttpGet('https://example.com/mm2loader'))()", keyInfo:"Get your key at https://light-hub.com/key", features:["ESP","Aimbot","Auto Farm"], changelog:["v1.2 - Added Auto Farm","v1.1 - Improved ESP","v1.0 - Initial release"], type:"key system", status:"undetected"},
-  { name:"Pet Simulator X", loader:"loadstring(game:HttpGet('https://example.com/psxloader'))()", keyInfo:"Get your key at https://light-hub.com/key", features:["Auto Hatch","Auto Farm","Pet Dupe"], changelog:["v2.0 - Major UI Update","v1.5 - Fixed Pet Dupe","v1.0 - Initial release"], type:"keyless", status:"detected"}
+  { name:"Murder Mystery 2", loader:"loadstring(game:HttpGet('https://example.com/mm2loader'))()", announcement:"🚀 Auto Farm now improved!", features:["ESP","Aimbot","Auto Farm"], changelog:["v1.2 - Added Auto Farm","v1.1 - Improved ESP","v1.0 - Initial release"], type:"key system", status:"undetected"},
+  { name:"Pet Simulator X", loader:"loadstring(game:HttpGet('https://example.com/psxloader'))()", announcement:"🛠️ Pet dupe fixed!", features:["Auto Hatch","Auto Farm","Pet Dupe"], changelog:["v2.0 - Major UI Update","v1.5 - Fixed Pet Dupe","v1.0 - Initial release"], type:"keyless", status:"detected"}
 ];
 
 // page navigation
@@ -300,6 +311,7 @@ const scriptLoader=document.getElementById("scriptLoader");
 const scriptFeatures=document.getElementById("scriptFeatures");
 const scriptChangelog=document.getElementById("scriptChangelog");
 const copyLoader=document.getElementById("copyLoader");
+const scriptAnnouncement=document.getElementById("scriptAnnouncement");
 
 function openScriptPage(index){
   const g=scripts[index];
@@ -309,12 +321,17 @@ function openScriptPage(index){
   scriptLoader.textContent=g.loader;
   scriptFeatures.innerHTML=g.features.map(f=>`<li>${f}</li>`).join("");
   scriptChangelog.innerHTML=g.changelog.map(c=>`<li>${c}</li>`).join("");
+  scriptAnnouncement.textContent=g.announcement || "";
 }
 
 backBtn.addEventListener("click",()=>{pages.forEach(p=>p.classList.remove("active-page")); document.getElementById("scripts").classList.add("active-page");});
 
 // copy button
-copyLoader.addEventListener("click",()=>{navigator.clipboard.writeText(scriptLoader.textContent);copyLoader.textContent="Copied!";setTimeout(()=>copyLoader.textContent="Copy",1500);});
+copyLoader.addEventListener("click", () => {
+  navigator.clipboard.writeText(scriptLoader.textContent);
+  copyLoader.textContent = "Copied!";
+  setTimeout(() => copyLoader.textContent = "Copy Loader", 1500);
+});
 </script>
-</body>
-</html>
+</body>body>
+</html>html>
