@@ -9,42 +9,42 @@
 <body>
 <!-- HEADER -->
 <header>
-  <h1 class="logo">Light Hub</h1>
+  <h1>Light Hub</h1>
   <div class="hamburger" id="hamburger">
     <span></span>
     <span></span>
     <span></span>
   </div>
-  <nav class="menu" id="menu">
-    <button data-page="home" class="nav-btn">Home</button>
-    <button data-page="scripts" class="nav-btn">Scripts</button>
-    <button data-page="keysystem" class="nav-btn">Key System</button>
-    <button data-page="discord" class="nav-btn">Discord</button>
-  </nav>
+  <div class="menu" id="menu">
+    <button data-page="home">Home</button>
+    <button data-page="scripts">Scripts</button>
+    <button data-page="keysystem">Key System</button>
+    <button data-page="discord">Discord</button>
+  </div>
 </header>
 
 <main>
   <!-- HOME PAGE -->
-  <section id="home" class="page active-page" data-animate="fade">
-    <div class="announcement glow">🌟 Welcome to Light Hub, the celestial hub of Roblox scripts!</div>
-    <div class="card card-glow">
+  <section id="home" class="page active-page">
+    <div class="announcement">🌟 Welcome to Light Hub, the celestial hub of Roblox scripts!</div>
+    <div class="card">
       <h2>Welcome Explorer</h2>
       <p>Immerse yourself in a universe of glowing scripts, pulsating features, and interactive cosmic interfaces. Hover over anything to see it light up and animate as if it’s alive!</p>
     </div>
   </section>
 
   <!-- SCRIPTS PAGE -->
-  <section id="scripts" class="page" data-animate="fade">
-    <div class="card card-glow">
+  <section id="scripts" class="page">
+    <div class="card">
       <h2>Supported Games</h2>
       <div class="filters">
-        <input type="text" id="searchBox" placeholder="Search for a game..." class="filter-input">
-        <select id="filterKey" class="filter-select">
+        <input type="text" id="searchBox" placeholder="Search for a game...">
+        <select id="filterKey">
           <option value="">All Types</option>
           <option value="Key System">Key System</option>
           <option value="Keyless">Keyless</option>
         </select>
-        <select id="filterStatus" class="filter-select">
+        <select id="filterStatus">
           <option value="">All Status</option>
           <option value="Undetected">Undetected</option>
           <option value="Detected">Detected</option>
@@ -55,72 +55,52 @@
   </section>
 
   <!-- KEY SYSTEM PAGE -->
-  <section id="keysystem" class="page" data-animate="fade">
-    <div class="card card-glow">
+  <section id="keysystem" class="page">
+    <div class="card">
       <h2>Key System</h2>
       <p>Coming soon ✨ Prepare your keys and enter the cosmic vault of Light Hub!</p>
     </div>
   </section>
 
   <!-- DISCORD PAGE -->
-  <section id="discord" class="page" data-animate="fade">
-    <div class="card card-glow">
+  <section id="discord" class="page">
+    <div class="card">
       <h2>Join our Discord</h2>
       <p>Stay updated with all Light Hub announcements, new scripts, and celestial events!</p>
-      <a href="#" class="copy-btn glow-btn">Join Discord</a>
+      <div style="margin-top:1rem;">
+        <a href="#" class="copy-btn">Join Discord</a>
+      </div>
     </div>
   </section>
 
-<!-- INDIVIDUAL SCRIPT PAGE -->
-<section id="scriptPage" class="page" data-animate="fade">
-  <div class="script-header glow-panel">
-    <button id="backBtn" class="copy-btn glow-btn back-btn">← Back</button>
-    <div class="script-title">
-      <h1 id="scriptName">Script Name</h1>
-      <div id="scriptAnnouncement" class="announcement glow-subtitle">✨ New update available!</div>
-    </div>
-  </div>
+  <!-- INDIVIDUAL SCRIPT PAGE -->
+  <section id="scriptPage" class="page">
+    <button id="backBtn" class="copy-btn">← Back</button>
+    <div class="announcement" id="scriptAnnouncement"></div>
+    <div class="card">
+      <h2 id="scriptName"></h2>
 
-  <div class="script-main">
-    <!-- Loader & Copy -->
-    <div class="script-section glow-panel">
-      <h2>Loader</h2>
-      <button id="copyLoader" class="copy-btn glow-btn">Copy Loader</button>
-      <div class="scroll-box scroll-glow">
-        <code id="scriptLoader">// loader code here</code>
+      <div class="feature-section scroll-box" id="scriptFeatures">
+        <!-- Features appear as glowing chips here -->
+      </div>
+
+      <div class="loader-changelog-container">
+        <div class="scroll-box loader-box">
+          <h3>Loader</h3>
+          <button class="copy-btn" id="copyLoader">Copy Loader</button>
+          <code id="scriptLoader"></code>
+        </div>
+
+        <div class="scroll-box changelog-box">
+          <h3>Changelog</h3>
+          <ul id="scriptChangelog"></ul>
+        </div>
       </div>
     </div>
+  </section>
+</main>
 
-    <!-- Features -->
-    <div class="script-section glow-panel">
-      <h2>Features</h2>
-      <div id="scriptFeatures" class="features-grid">
-        <!-- each feature as a chip -->
-        <span class="feature-chip glow-chip">Auto Farm</span>
-        <span class="feature-chip glow-chip">No Clip</span>
-        <span class="feature-chip glow-chip">Speed Boost</span>
-        <span class="feature-chip glow-chip">Auto Collect</span>
-      </div>
-    </div>
-
-    <!-- Changelog -->
-    <div class="script-section glow-panel">
-      <h2>Changelog</h2>
-      <div class="scroll-box scroll-glow" id="scriptChangelog">
-        <ul>
-          <li>v1.2 - Added Auto Farm & Speed Boost</li>
-          <li>v1.1 - Improved loader stability</li>
-          <li>v1.0 - Initial release</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<footer class="footer glow-footer">
-  Light Hub © 2025 | 🌌 Experience the cosmos of scripts
-</footer>
+<footer>Light Hub © 2025 | 🌌 Experience the cosmos of scripts</footer>
 
 <script src="main.js"></script>
 </body>
