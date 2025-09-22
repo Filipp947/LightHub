@@ -75,7 +75,12 @@ header h1::after {
   background: #eee;
   border-radius: 3px;
   transform-origin: center;
-  transition: all 0.4s ease;
+  transition: all 0.4s ease, box-shadow 0.3s ease;
+}
+
+/* glow effect on X */
+.hamburger.active span {
+  box-shadow: 0 0 15px #c084fc, 0 0 25px #8a2be2, 0 0 35px #ffccff;
 }
 .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
 .hamburger.active span:nth-child(2) { opacity: 0; }
@@ -133,12 +138,7 @@ header h1::after {
 }
 .card:hover {
   transform: scale(1.03);
-  box-shadow: 0 0 60px rgba(200,132,252,0.8);
-}
-.card h2 {
-  color: #c084fc;
-  margin-bottom: 1rem;
-  text-transform: capitalize;
+  box-shadow: 0 0 80px rgba(200,132,252,0.8), 0 0 120px rgba(138,43,226,0.6);
 }
 
 /* ---------- ANNOUNCEMENTS ---------- */
@@ -164,8 +164,8 @@ header h1::after {
   padding: 0.5rem 0.8rem;
   border-radius: 0.5rem;
   border: none;
-  font-size: 0.9rem;
-  transition: all 0.3s;
+  font-size: 0.95rem;
+  transition: all 0.3s ease-in-out;
   background: rgba(60,0,120,0.5);
   color: #eee;
   box-shadow: 0 0 10px rgba(138,43,226,0.5);
@@ -173,7 +173,7 @@ header h1::after {
 .filters input:focus, .filters select:focus {
   outline: none;
   transform: scale(1.05);
-  box-shadow: 0 0 25px #c084fc;
+  box-shadow: 0 0 30px #c084fc, 0 0 50px #8a2be2, 0 0 70px #ffccff;
 }
 
 /* ---------- GAME LIST ---------- */
@@ -193,29 +193,30 @@ header h1::after {
 }
 .game-card:hover {
   transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 0 40px rgba(200,132,252,0.7);
+  box-shadow: 0 0 60px rgba(200,132,252,0.8), 0 0 80px rgba(138,43,226,0.5);
 }
-@keyframes popIn { from {opacity:0; transform: scale(0.95);} to {opacity:1; transform:scale(1);} }
 
-/* ---------- BADGES ---------- */
-.badges {
+/* ---------- BADGES / FEATURES ---------- */
+.features-grid {
   display: flex;
-  gap: 0.5rem;
   flex-wrap: wrap;
-  margin-top: 0.5rem;
+  gap: 0.5rem;
 }
-.badge {
-  padding: 0.25rem 0.6rem;
-  border-radius: 0.5rem;
-  font-size: 0.75rem;
+.feature-chip {
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.6rem;
   font-weight: bold;
+  font-size: 0.8rem;
   color: #111;
-  text-transform: capitalize;
-  transition: all 0.3s;
+  background: linear-gradient(45deg, #ffccff, #c084fc, #8a2be2);
+  box-shadow: 0 0 15px #c084fc, 0 0 25px #8a2be2;
+  cursor: default;
+  transition: all 0.3s ease-in-out;
 }
-.badge.yellow { background: #ffd633; }
-.badge.green { background: #4dff4d; }
-.badge.red { background: #ff4d4d; }
+.feature-chip:hover {
+  transform: scale(1.1) rotateZ(2deg);
+  box-shadow: 0 0 30px #ffccff, 0 0 50px #c084fc, 0 0 70px #8a2be2;
+}
 
 /* ---------- SCROLL BOXES ---------- */
 .scroll-box {
@@ -236,14 +237,14 @@ header h1::after {
   border-radius: 3px;
 }
 .scroll-box:hover {
-  box-shadow: 0 0 50px rgba(200,132,252,0.7);
+  box-shadow: 0 0 60px rgba(200,132,252,0.8), 0 0 100px rgba(138,43,226,0.5);
   transform: scale(1.02);
 }
 
 /* ---------- COPY BUTTON ---------- */
 .copy-btn {
   margin-bottom: 0.5rem;
-  background: #c084fc;
+  background: linear-gradient(90deg, #ffccff, #c084fc, #8a2be2);
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 0.6rem;
@@ -251,11 +252,11 @@ header h1::after {
   font-weight: bold;
   color: #111;
   transition: all 0.3s ease;
+  box-shadow: 0 0 15px #c084fc, 0 0 25px #8a2be2, 0 0 35px #ffccff;
 }
 .copy-btn:hover {
-  transform: scale(1.1);
-  background: #8a2be2;
-  box-shadow: 0 0 30px #c084fc;
+  transform: scale(1.1) rotateZ(-1deg);
+  box-shadow: 0 0 40px #ffccff, 0 0 60px #c084fc, 0 0 80px #8a2be2;
 }
 
 /* ---------- FOOTER ---------- */
@@ -276,12 +277,4 @@ footer {
   header h1 { font-size: 2.6rem; }
   .card { padding: 2rem; }
   .filters input, .filters select { font-size: 1rem; padding:0.55rem 1rem; }
-}
-
-/* ---------- MISC ---------- */
-.loader-container {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
-  flex-wrap: wrap;
 }
