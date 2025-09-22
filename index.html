@@ -5,7 +5,6 @@
 <title>Light Hub</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-/* reset */
 *{box-sizing:border-box;margin:0;padding:0;}
 body{
   font-family:'Segoe UI',sans-serif;
@@ -130,9 +129,45 @@ h2{color:#c084fc;margin-bottom:0.8rem;}
 .badge.green{background:#4dff4d;}
 .badge.red{background:#ff4d4d;}
 
+/* script page loader box */
+.loader-box{
+  background:rgba(30,0,60,0.8);
+  padding:1rem;
+  border-radius:0.8rem;
+  margin-bottom:1rem;
+  box-shadow:0 0 20px rgba(255,200,255,0.3);
+  word-wrap:break-word;
+  position:relative;
+}
+.copy-btn{
+  position:absolute;
+  top:10px;
+  right:10px;
+  background:#c084fc;
+  border:none;
+  padding:0.3rem 0.6rem;
+  border-radius:0.5rem;
+  cursor:pointer;
+  color:#111;
+  font-weight:bold;
+  font-size:0.8rem;
+}
+.copy-btn:hover{background:#8a2be2;}
+
+/* announcement */
+.announcement{
+  background:rgba(255, 255, 255, 0.1);
+  padding:0.7rem 1rem;
+  border-left:4px solid #c084fc;
+  border-radius:0.5rem;
+  margin-bottom:1rem;
+  box-shadow:0 0 15px rgba(200,132,252,0.3);
+}
+
+/* footer */
 footer{text-align:center;padding:2rem;color:#999;font-size:0.8rem;}
 
-/* desktop overrides */
+/* responsive grids */
 @media(min-width:768px){
   header h1{font-size:2rem;}
   .hamburger{width:30px;height:25px;}
@@ -166,6 +201,7 @@ footer{text-align:center;padding:2rem;color:#999;font-size:0.8rem;}
 </header>
 
 <section id="home" class="page active-page">
+  <div class="announcement">🌟 New scripts added today! Check out the latest updates.</div>
   <div class="card"><h2>Welcome to Light Hub</h2><p>Explore the universe of Roblox scripts. Browse supported games, check features, and stay updated with the latest changelogs.</p></div>
 </section>
 
@@ -187,11 +223,25 @@ footer{text-align:center;padding:2rem;color:#999;font-size:0.8rem;}
     </div>
     <div class="game-list" id="gameList"></div>
   </div>
-  <div id="gameDetails" class="card" style="display:none;"></div>
 </section>
 
 <section id="keysystem" class="page">
   <div class="card"><h2>Key System</h2><p>Coming soon ✨</p></div>
+</section>
+
+<section id="scriptPage" class="page">
+  <button id="backBtn" style="margin-bottom:1rem;padding:0.5rem 1rem;background:#c084fc;border:none;border-radius:0.6rem;cursor:pointer;">← Back</button>
+  <div class="card">
+    <h2 id="scriptName"></h2>
+    <div class="loader-box">
+      <button class="copy-btn" id="copyLoader">Copy</button>
+      <code id="scriptLoader" style="white-space:pre-wrap;"></code>
+    </div>
+    <h3>Features</h3>
+    <ul id="scriptFeatures"></ul>
+    <h3>Changelog</h3>
+    <ul id="scriptChangelog"></ul>
+  </div>
 </section>
 
 <footer>Light Hub © 2025</footer>
@@ -219,9 +269,8 @@ pageButtons.forEach(btn=>{
   });
 });
 
-// scripts rendering
+// scripts list rendering
 const gameList=document.getElementById("gameList");
-const gameDetails=document.getElementById("gameDetails");
 const searchBox=document.getElementById("searchBox");
 const filterKey=document.getElementById("filterKey");
 const filterStatus=document.getElementById("filterStatus");
@@ -235,24 +284,37 @@ function renderGames(){
     const card=document.createElement("div");
     card.className="game-card";
     card.innerHTML=`<h3>${g.name}</h3><div class="badges"><span class="badge yellow">${g.type}</span><span class="badge ${g.status==="undetected"?"green":"red"}">${g.status}</span></div>`;
-    card.onclick=()=>showGame(i);
+    card.onclick=()=>openScriptPage(i);
     gameList.appendChild(card);
   });
 }
 
-function showGame(index){
-  const g=scripts[index];
-  gameDetails.style.display="block";
-  gameDetails.innerHTML=`<h2>${g.name}</h2>
-<p><strong>Loader:</strong> <code>${g.loader}</code></p>
-<p><strong>How to get key:</strong> ${g.keyInfo}</p>
-<h3>Features</h3><ul>${g.features.map(f=>`<li>${f}</li>`).join("")}</ul>
-<h3>Changelog</h3><ul>${g.changelog.map(c=>`<li>${c}</li>`).join("")}</ul>`;
-  gameDetails.scrollIntoView({behavior:"smooth"});
-}
-
 [searchBox,filterKey,filterStatus].forEach(el=>{ el.addEventListener("input",renderGames); el.addEventListener("change",renderGames); });
 renderGames();
+
+// individual script page
+const scriptPage=document.getElementById("scriptPage");
+const backBtn=document.getElementById("backBtn");
+const scriptName=document.getElementById("scriptName");
+const scriptLoader=document.getElementById("scriptLoader");
+const scriptFeatures=document.getElementById("scriptFeatures");
+const scriptChangelog=document.getElementById("scriptChangelog");
+const copyLoader=document.getElementById("copyLoader");
+
+function openScriptPage(index){
+  const g=scripts[index];
+  pages.forEach(p=>p.classList.remove("active-page"));
+  scriptPage.classList.add("active-page");
+  scriptName.textContent=g.name;
+  scriptLoader.textContent=g.loader;
+  scriptFeatures.innerHTML=g.features.map(f=>`<li>${f}</li>`).join("");
+  scriptChangelog.innerHTML=g.changelog.map(c=>`<li>${c}</li>`).join("");
+}
+
+backBtn.addEventListener("click",()=>{pages.forEach(p=>p.classList.remove("active-page")); document.getElementById("scripts").classList.add("active-page");});
+
+// copy button
+copyLoader.addEventListener("click",()=>{navigator.clipboard.writeText(scriptLoader.textContent);copyLoader.textContent="Copied!";setTimeout(()=>copyLoader.textContent="Copy",1500);});
 </script>
 </body>
 </html>
