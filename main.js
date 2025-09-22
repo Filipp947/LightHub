@@ -1,8 +1,10 @@
 // ------------------------ HAMBURGER TOGGLE ------------------------
 const hamburger = document.getElementById('hamburger');
 const menu = document.getElementById('menu');
+
 hamburger.addEventListener('click', () => {
   hamburger.classList.toggle('active');
+
   if(menu.style.display === 'flex'){
     menu.style.opacity = 0;
     setTimeout(() => { menu.style.display = 'none'; }, 300);
@@ -50,7 +52,7 @@ const pages = document.querySelectorAll(".page");
 
 pageButtons.forEach(btn => {
   btn.addEventListener("click", () => {
-    pages.forEach(p => { p.classList.remove("active-page"); });
+    pages.forEach(p => p.classList.remove("active-page"));
     document.getElementById(btn.dataset.page).classList.add("active-page");
     // fade menu out
     hamburger.classList.remove('active');
@@ -70,10 +72,12 @@ function renderGames() {
   const query = searchBox.value.toLowerCase();
   const keyFilter = filterKey.value;
   const statusFilter = filterStatus.value;
-  scripts.filter(g => g.name.toLowerCase().includes(query) &&
-                      (keyFilter === "" || g.type === keyFilter) &&
-                      (statusFilter === "" || g.status === statusFilter))
-         .forEach((g, i) => {
+
+  scripts.filter(g => 
+    g.name.toLowerCase().includes(query) &&
+    (keyFilter === "" || g.type === keyFilter) &&
+    (statusFilter === "" || g.status === statusFilter)
+  ).forEach((g, i) => {
     const card = document.createElement("div");
     card.className = "game-card";
     card.innerHTML = `
@@ -91,6 +95,16 @@ function renderGames() {
       card.style.opacity = 1;
       card.style.transform = "scale(1)";
     }, i*100);
+
+    card.addEventListener("mouseenter", () => {
+      card.style.boxShadow = "0 0 80px rgba(200,132,252,0.8), 0 0 100px rgba(138,43,226,0.5)";
+      card.style.transform = "scale(1.05)";
+    });
+    card.addEventListener("mouseleave", () => {
+      card.style.boxShadow = "0 0 15px rgba(138,43,226,0.4)";
+      card.style.transform = "scale(1)";
+    });
+
     card.addEventListener("click", () => openScriptPage(i));
     gameList.appendChild(card);
   });
@@ -116,23 +130,35 @@ function openScriptPage(index) {
   const g = scripts[index];
   pages.forEach(p => p.classList.remove("active-page"));
   scriptPage.classList.add("active-page");
+
   // Animate script page content
   scriptName.textContent = g.name;
-  scriptName.style.opacity = 0;
   scriptLoader.textContent = g.loader;
-  scriptLoader.style.opacity = 0;
-  scriptFeatures.innerHTML = g.features.map(f => `<li>${f}</li>`).join("");
-  scriptFeatures.style.opacity = 0;
+  scriptFeatures.innerHTML = g.features.map(f => `<span class="feature-chip glow-chip">${f}</span>`).join("");
   scriptChangelog.innerHTML = g.changelog.map(c => `<li>${c}</li>`).join("");
-  scriptChangelog.style.opacity = 0;
   scriptAnnouncement.textContent = g.announcement || "";
-  scriptAnnouncement.style.opacity = 0;
 
-  setTimeout(() => { scriptName.style.transition = "all 0.5s"; scriptName.style.opacity = 1; }, 100);
-  setTimeout(() => { scriptLoader.style.transition = "all 0.5s"; scriptLoader.style.opacity = 1; }, 300);
-  setTimeout(() => { scriptFeatures.style.transition = "all 0.5s"; scriptFeatures.style.opacity = 1; }, 500);
-  setTimeout(() => { scriptChangelog.style.transition = "all 0.5s"; scriptChangelog.style.opacity = 1; }, 700);
-  setTimeout(() => { scriptAnnouncement.style.transition = "all 0.5s"; scriptAnnouncement.style.opacity = 1; }, 900);
+  // Fade in sequence
+  [scriptName, scriptLoader, scriptFeatures, scriptChangelog, scriptAnnouncement].forEach((el, i) => {
+    el.style.opacity = 0;
+    setTimeout(() => {
+      el.style.transition = "all 0.5s ease";
+      el.style.opacity = 1;
+      el.style.transform = "translateY(0)";
+    }, i*200);
+  });
+
+  // feature chip hover glow
+  document.querySelectorAll(".feature-chip").forEach(chip => {
+    chip.addEventListener("mouseenter", () => {
+      chip.style.transform = "scale(1.1) rotateZ(2deg)";
+      chip.style.boxShadow = "0 0 30px #ffccff, 0 0 50px #c084fc, 0 0 70px #8a2be2";
+    });
+    chip.addEventListener("mouseleave", () => {
+      chip.style.transform = "scale(1) rotateZ(0deg)";
+      chip.style.boxShadow = "0 0 15px #c084fc, 0 0 25px #8a2be2";
+    });
+  });
 }
 
 backBtn.addEventListener("click", () => {
@@ -145,8 +171,10 @@ copyLoader.addEventListener("click", () => {
   navigator.clipboard.writeText(scriptLoader.textContent);
   copyLoader.textContent = "Copied!";
   copyLoader.style.transform = "scale(1.2)";
+  copyLoader.style.boxShadow = "0 0 40px #ffccff, 0 0 60px #c084fc, 0 0 80px #8a2be2";
   setTimeout(() => { 
     copyLoader.textContent = "Copy Loader"; 
     copyLoader.style.transform = "scale(1)"; 
+    copyLoader.style.boxShadow = "0 0 15px #c084fc, 0 0 25px #8a2be2, 0 0 35px #ffccff";
   }, 1500);
 });
