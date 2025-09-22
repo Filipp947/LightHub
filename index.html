@@ -14,6 +14,10 @@ body{
   min-height:100vh;
   overflow-x:hidden;
   -webkit-tap-highlight-color: transparent;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  transition:background 0.5s;
 }
 
 /* stars background */
@@ -29,16 +33,19 @@ body::before{
 /* header */
 header{
   background:rgba(40,0,70,0.85);
-  padding:1rem;
+  padding:1rem 2rem;
   display:flex;
   justify-content:space-between;
   align-items:center;
+  width:100%;
+  max-width:1200px;
   box-shadow:0 0 25px #8a2be2;
   position:sticky; top:0; z-index:10;
   backdrop-filter:blur(8px);
+  border-radius:0 0 1rem 1rem;
 }
 header h1{
-  font-size:1.5rem;
+  font-size:1.8rem;
   background:linear-gradient(90deg,#ffccff,#c084fc,#8a2be2);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
@@ -46,7 +53,7 @@ header h1{
   position:relative;
 }
 header h1::after{
-  content:'✨'; position:absolute; animation:starTwinkle 2s infinite alternate; top:-5px; right:-20px;
+  content:'✨'; position:absolute; animation:starTwinkle 2s infinite alternate; top:-5px; right:-25px;
 }
 @keyframes starTwinkle{from{opacity:0.3;}to{opacity:1;}}
 
@@ -76,8 +83,8 @@ header h1::after{
 /* menu */
 .menu{
   position:absolute;
-  top:65px;
-  right:1rem;
+  top:75px;
+  right:2rem;
   background:rgba(50,0,100,0.95);
   border-radius:0.8rem;
   overflow:hidden;
@@ -107,52 +114,76 @@ header h1::after{
 /* pages */
 .page{
   display:none;
-  padding:1rem;
-  animation:fade 0.5s;
+  width:100%;
+  max-width:1200px;
+  padding:1rem 2rem;
   opacity:0;
-  transform:translateY(8px);
-  transition:all 0.4s ease;
+  transform:translateY(15px);
+  transition:all 0.5s ease;
 }
 .active-page{
   display:block;
   opacity:1;
   transform:translateY(0);
 }
-@keyframes fade{from{opacity:0;}to{opacity:1;}}
 
 /* card */
 .card{
   background:rgba(40,0,70,0.6);
   border-radius:1rem;
-  padding:1rem;
+  padding:1.5rem;
   margin:1rem 0;
   box-shadow:0 0 20px rgba(160,100,255,0.4);
   backdrop-filter:blur(8px);
-  animation:pop 0.4s;
+  animation:pop 0.5s ease forwards;
   position:relative;
 }
 .card:hover{
   transform:scale(1.02);
-  box-shadow:0 0 35px rgba(200,132,252,0.6);
+  box-shadow:0 0 45px rgba(200,132,252,0.6);
   transition:0.3s;
 }
 @keyframes pop{from{transform:scale(0.97);opacity:0;}to{transform:scale(1);opacity:1;}}
+
 h2{color:#c084fc;margin-bottom:0.8rem;}
 
 /* filters + search */
-.filters{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;}
-.filters select,.filters input{padding:0.4rem 0.6rem;border-radius:0.5rem;border:none;font-size:0.85rem;}
+.filters{
+  display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;
+  justify-content:flex-start;
+  align-items:center;
+}
+.filters select,.filters input{
+  padding:0.5rem 0.8rem;
+  border-radius:0.5rem;
+  border:none;
+  font-size:0.9rem;
+  background:rgba(80,0,130,0.3);
+  color:#eee;
+  transition:all 0.3s ease;
+}
+.filters select:hover,.filters input:hover,
+.filters select:focus,.filters input:focus{
+  background:rgba(120,0,200,0.4);
+  transform:scale(1.05);
+  outline:none;
+}
 
 /* game list */
 .game-list{display:grid;gap:0.8rem;grid-template-columns:1fr;}
 .game-card{
-  background:rgba(60,0,100,0.7); padding:1rem;
-  border-radius:1rem; box-shadow:0 0 15px rgba(138,43,226,0.4);
-  transition:transform 0.25s, box-shadow 0.3s;
+  background:rgba(60,0,100,0.7); 
+  padding:1rem;
+  border-radius:1rem; 
+  box-shadow:0 0 15px rgba(138,43,226,0.4);
+  transition:transform 0.35s, box-shadow 0.35s, opacity 0.5s;
   cursor:pointer;
   position:relative;
+  opacity:0;
+  transform:translateY(20px);
 }
-.game-card:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 30px rgba(200,132,252,0.6);}
+.game-card.show{opacity:1;transform:translateY(0);}
+.game-card:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 0 40px rgba(200,132,252,0.7);}
 .badges{margin-top:0.5rem;display:flex;gap:0.5rem;flex-wrap:wrap;}
 .badge{padding:0.2rem 0.5rem;border-radius:0.4rem;font-size:0.75rem;font-weight:bold;color:#111;}
 .badge.yellow{background:#ffd633;}
@@ -165,58 +196,59 @@ h2{color:#c084fc;margin-bottom:0.8rem;}
   padding:1rem;
   border-radius:0.8rem;
   margin-bottom:1rem;
-  box-shadow:0 0 20px rgba(255,200,255,0.3);
+  box-shadow:0 0 25px rgba(255,200,255,0.3);
   overflow-x:auto;
   white-space:nowrap;
   position:relative;
-  transition:box-shadow 0.3s ease, transform 0.3s ease;
+  transition:all 0.4s ease;
 }
 .scroll-box::-webkit-scrollbar{height:6px;}
 .scroll-box::-webkit-scrollbar-thumb{background:#c084fc;border-radius:3px;}
-.scroll-box:hover{transform:scale(1.01);box-shadow:0 0 45px rgba(200,132,252,0.7);}
+.scroll-box:hover{transform:scale(1.01);box-shadow:0 0 50px rgba(200,132,252,0.8);}
 
 /* copy button outside */
 .copy-btn{
   margin-bottom:0.5rem;
   background:#c084fc;
   border:none;
-  padding:0.4rem 0.8rem;
+  padding:0.5rem 1rem;
   border-radius:0.5rem;
   cursor:pointer;
   color:#111;
   font-weight:bold;
-  font-size:0.85rem;
-  transition:0.3s;
+  font-size:0.9rem;
+  transition:all 0.3s ease;
 }
-.copy-btn:hover{background:#8a2be2;}
+.copy-btn:hover{background:#8a2be2;transform:scale(1.05);box-shadow:0 0 15px #c084fc;}
 
 /* announcement */
 .announcement{
   background:rgba(255, 255, 255, 0.1);
-  padding:0.7rem 1rem;
+  padding:1rem 1.2rem;
   border-left:4px solid #c084fc;
   border-radius:0.5rem;
   margin-bottom:1rem;
-  box-shadow:0 0 15px rgba(200,132,252,0.3);
+  box-shadow:0 0 20px rgba(200,132,252,0.3);
+  animation:fade 0.6s ease;
 }
 
 /* footer */
-footer{text-align:center;padding:2rem;color:#999;font-size:0.8rem;}
+footer{text-align:center;padding:2rem;color:#999;font-size:0.85rem;}
 
 /* responsive grids */
 @media(min-width:768px){
   header h1{font-size:2rem;}
   .hamburger{width:30px;height:25px;}
   .menu button{font-size:1.1rem;padding:0.8rem 1.5rem;}
-  .filters select,.filters input{font-size:0.95rem;padding:0.5rem 0.8rem;}
-  .card{padding:1.5rem;}
-  .game-list{grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem;}
+  .filters select,.filters input{font-size:0.95rem;padding:0.55rem 0.8rem;}
+  .card{padding:1.7rem;}
+  .game-list{grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1rem;}
 }
 @media(min-width:1024px){
   header h1{font-size:2.3rem;}
   .hamburger{width:35px;height:28px;}
   .menu button{font-size:1.2rem;padding:0.9rem 1.6rem;}
-  .filters select,.filters input{font-size:1rem;padding:0.55rem 0.9rem;}
+  .filters select,.filters input{font-size:1rem;padding:0.6rem 1rem;}
   .card{padding:2rem;}
 }
 </style>
@@ -224,15 +256,12 @@ footer{text-align:center;padding:2rem;color:#999;font-size:0.8rem;}
 <body>
 <header>
 <h1>Light Hub</h1>
-<div class="hamburger" id="hamburger">
-  <span></span>
-  <span></span>
-  <span></span>
-</div>
+<div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
 <div class="menu" id="menu">
   <button data-page="home">Home</button>
   <button data-page="scripts">Scripts</button>
   <button data-page="keysystem">Key System</button>
+  <button data-page="discord">Discord</button>
 </div>
 </header>
 
@@ -246,24 +275,15 @@ footer{text-align:center;padding:2rem;color:#999;font-size:0.8rem;}
     <h2>Supported Games</h2>
     <div class="filters">
       <input type="text" id="searchBox" placeholder="Search game...">
-      <select id="filterKey">
-        <option value="">All Types</option>
-        <option value="key system">Key System</option>
-        <option value="keyless">Keyless</option>
-      </select>
-      <select id="filterStatus">
-        <option value="">All Status</option>
-        <option value="undetected">Undetected</option>
-        <option value="detected">Detected</option>
-      </select>
+      <select id="filterKey"><option value="">All Types</option><option value="key system">Key System</option><option value="keyless">Keyless</option></select>
+      <select id="filterStatus"><option value="">All Status</option><option value="undetected">Undetected</option><option value="detected">Detected</option></select>
     </div>
     <div class="game-list" id="gameList"></div>
   </div>
 </section>
 
-<section id="keysystem" class="page">
-  <div class="card"><h2>Key System</h2><p>Coming soon ✨</p></div>
-</section>
+<section id="keysystem" class="page"><div class="card"><h2>Key System</h2><p>Coming soon ✨</p></div></section>
+<section id="discord" class="page"><div class="card"><h2>Discord</h2><p>Join our Discord server for updates, announcements, and support! ✨</p></div></section>
 
 <section id="scriptPage" class="page">
   <button id="backBtn" class="copy-btn">← Back</button>
@@ -282,74 +302,54 @@ footer{text-align:center;padding:2rem;color:#999;font-size:0.8rem;}
 <footer>Light Hub © 2025</footer>
 
 <script>
-// optional background image for scripts page
-const scriptsBg = ""; // add URL if desired
-const scriptsSection = document.getElementById("scripts");
-if (scriptsBg) {
-  scriptsSection.style.background = `url('${scriptsBg}') center/cover no-repeat`;
-  scriptsSection.style.transition = "background 0.5s";
-}
-
 // hamburger toggle
 const hamburger=document.getElementById("hamburger");
 const menu=document.getElementById("menu");
-let open=false;
 hamburger.addEventListener("click",()=>{
-  open=!open;
-  menu.style.display=open?"flex":"none";
+  hamburger.classList.toggle("active");
+  menu.style.display=(menu.style.display==="flex"?"none":"flex");
   menu.style.flexDirection="column";
-  hamburger.classList.toggle("active",open);
 });
 
-// capitalize helper
-function capitalizeFirst(str){return str.replace(/\b\w/g,c=>c.toUpperCase());}
-
-// add Discord tab
-const discordBtn=document.createElement("button");
-discordBtn.textContent="Discord";
-discordBtn.dataset.page="discord";
-menu.appendChild(discordBtn);
-
-// Discord page
-const discordSection=document.createElement("section");
-discordSection.id="discord";
-discordSection.className="page";
-discordSection.innerHTML=`<div class="card"><h2>Discord</h2><p>Join our Discord server for updates, announcements, and support! ✨</p></div>`;
-document.body.insertBefore(discordSection,document.querySelector("footer"));
-
-// scripts database
+// script database
 const scripts=[
-  { name:"99 Nights in the forest", loader:"loadstring(game:HttpGet('https://raw.githubusercontent.com/Filipp947/LightHub/refs/heads/main/99nightsintheforestloader.lua'))()", announcement:"Bypassed Latest Anticheat!", features:["Coming soon!"], changelog:["Bypassed Latest anticheat!","Fixed Lag Issues!"], type:"key system", status:"undetected"}
+  { name:"99 Nights in the Forest", loader:"loadstring(game:HttpGet('https://raw.githubusercontent.com/Filipp947/LightHub/refs/heads/main/99nightsintheforestloader.lua'))()", announcement:"Bypassed Latest Anticheat!", features:["Coming Soon!"], changelog:["Bypassed Latest Anticheat!","Fixed Lag Issues!"], type:"Key System", status:"Undetected"}
 ];
 
 // page navigation
 const pageButtons=document.querySelectorAll("#menu button");
 const pages=document.querySelectorAll(".page");
-pageButtons.forEach(btn=>{btn.addEventListener("click",()=>{
-  pages.forEach(p=>p.classList.remove("active-page"));
-  document.getElementById(btn.dataset.page).classList.add("active-page");
-  menu.style.display="none";
-  hamburger.classList.remove("active"); open=false;
-});});
+pageButtons.forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    pages.forEach(p=>p.classList.remove("active-page"));
+    document.getElementById(btn.dataset.page).classList.add("active-page");
+    menu.style.display="none";
+    hamburger.classList.remove("active");
+  });
+});
 
-// render games
+// scripts list rendering
 const gameList=document.getElementById("gameList");
 const searchBox=document.getElementById("searchBox");
 const filterKey=document.getElementById("filterKey");
 const filterStatus=document.getElementById("filterStatus");
+
 function renderGames(){
   gameList.innerHTML="";
   const query=searchBox.value.toLowerCase();
-  const keyFilter=filterKey.value;
-  const statusFilter=filterStatus.value;
-  scripts.filter(g=>g.name.toLowerCase().includes(query)&&(keyFilter===""||g.type===keyFilter)&&(statusFilter===""||g.status===statusFilter)).forEach((g,i)=>{
-    const card=document.createElement("div");
-    card.className="game-card";
-    card.innerHTML=`<h3>${g.name}</h3><div class="badges"><span class="badge yellow">${capitalizeFirst(g.type)}</span><span class="badge ${g.status==="undetected"?"green":"red"}">${capitalizeFirst(g.status)}</span></div>`;
-    card.onclick=()=>openScriptPage(i);
-    gameList.appendChild(card);
+  const keyFilter=filterKey.value.toLowerCase();
+  const statusFilter=filterStatus.value.toLowerCase();
+  scripts.filter(g=>g.name.toLowerCase().includes(query) && (keyFilter===""||g.type.toLowerCase()===keyFilter) && (statusFilter===""||g.status.toLowerCase()===statusFilter))
+    .forEach((g,i)=>{
+      const card=document.createElement("div");
+      card.className="game-card";
+      card.innerHTML=`<h3>${g.name}</h3><div class="badges"><span class="badge yellow">${g.type}</span><span class="badge ${g.status.toLowerCase()==="undetected"?"green":"red"}">${g.status}</span></div>`;
+      card.onclick=()=>openScriptPage(i);
+      gameList.appendChild(card);
+      setTimeout(()=>card.classList.add("show"),50*i);
   });
 }
+
 [searchBox,filterKey,filterStatus].forEach(el=>{ el.addEventListener("input",renderGames); el.addEventListener("change",renderGames); });
 renderGames();
 
@@ -371,16 +371,20 @@ function openScriptPage(index){
   scriptLoader.textContent=g.loader;
   scriptFeatures.innerHTML=g.features.map(f=>`<li>${f}</li>`).join("");
   scriptChangelog.innerHTML=g.changelog.map(c=>`<li>${c}</li>`).join("");
-  scriptAnnouncement.textContent=g.announcement||"";
+  scriptAnnouncement.textContent=g.announcement || "";
 }
 
-backBtn.addEventListener("click",()=>{pages.forEach(p=>p.classList.remove("active-page")); document.getElementById("scripts").classList.add("active-page");});
+// back button
+backBtn.addEventListener("click",()=>{
+  pages.forEach(p=>p.classList.remove("active-page"));
+  document.getElementById("scripts").classList.add("active-page");
+});
 
-// copy loader
-copyLoader.addEventListener("click",()=>{
+// copy button
+copyLoader.addEventListener("click", () => {
   navigator.clipboard.writeText(scriptLoader.textContent);
-  copyLoader.textContent="Copied!";
-  setTimeout(()=>copyLoader.textContent="Copy Loader",1500);
+  copyLoader.textContent = "Copied!";
+  setTimeout(() => copyLoader.textContent = "Copy Loader", 1500);
 });
 </script>
 </body>
