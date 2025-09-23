@@ -22,14 +22,13 @@ const scripts = [
     features: [
       "Kill Aura","Chop Aura","Aura Radius","Enable Hitbox","Hitbox Size",
       "Auto Eat","Auto Upgrade Campfire","Auto Cook","Auto Collect Coins","Auto Pick Flower",
-      "Enable Esp Items","Esp Entity","Esp Entity","Enable Esp Entity","ESP Players",
+      "Enable Esp Items","Esp Entity","Enable Esp Entity","ESP Players",
       "Bring","Bring Scrap to Workbench","Bring Wood to Workbench",
       "Teleport to campfire","Teleport to stronghold","Teleport To Children",
       "Enable Fly","Speed Changer","Noclip","Instant Interact","Disable Deer",
-      "Fullbright","Auto Plant Saplings","Delete Fog","Vibrant Colors",
-      "FPS Boost","Show FPS","Show Ping","Anti AFK Kick","Anti Void"
+      "Fullbright","Auto Plant Saplings","Delete Fog","Vibrant Colors","FPS Boost","Show FPS","Show Ping","Anti AFK Kick","Anti Void"
     ],
-    changelog: ["Bypassed Latest Anticheat", "Fixed Lag Issues", "Improved Features UI"],
+    changelog: ["Bypassed Latest Anticheat","Fixed Lag Issues","Improved Features UI"],
     type: "Key System",
     status: "Undetected"
   }
@@ -66,8 +65,11 @@ function renderGames() {
                       (keyFilter === "" || g.type === keyFilter) &&
                       (statusFilter === "" || g.status === statusFilter))
          .forEach((g, i) => {
+    const wrapper = document.createElement("div");
+    wrapper.className = "glow-wrapper";
+
     const card = document.createElement("div");
-    card.className = "game-card glow-box glow-pulse";
+    card.className = "card";
     card.innerHTML = `
       <h3>${g.name}</h3>
       <div class="badges">
@@ -75,7 +77,8 @@ function renderGames() {
         <span class="badge ${g.status === "Undetected" ? "green" : "red"}">${g.status}</span>
       </div>
     `;
-    // animate card entry
+
+    // Animate card entry
     card.style.opacity = 0;
     card.style.transform = "scale(0.95)";
     setTimeout(() => {
@@ -85,7 +88,8 @@ function renderGames() {
     }, i * 100);
 
     card.addEventListener("click", () => openScriptPage(i));
-    gameList.appendChild(card);
+    wrapper.appendChild(card);
+    gameList.appendChild(wrapper);
   });
 }
 
@@ -110,44 +114,49 @@ function openScriptPage(index) {
   pages.forEach(p => p.classList.remove("active-page"));
   scriptPage.classList.add("active-page");
 
-  // fill content
+  // Fill content
   scriptName.textContent = g.name;
   scriptLoader.textContent = g.loader;
   scriptAnnouncement.textContent = g.announcement || "";
 
-  // reset opacity for fade
+  // Reset opacity for sequential fade-in
   [scriptName, scriptLoader, scriptAnnouncement, scriptFeatures, scriptChangelog].forEach(el => {
     el.style.opacity = 0;
+    el.style.transform = "translateY(10px)";
   });
 
-  // FEATURES as glowing chips
+  // FEATURES as chips
   scriptFeatures.innerHTML = "";
   g.features.forEach(f => {
     const chip = document.createElement("span");
-    chip.className = "feature-chip glow-box glow-pulse";
+    chip.className = "feature-chip";
     chip.textContent = f;
     scriptFeatures.appendChild(chip);
   });
 
   // CHANGELOG
   scriptChangelog.innerHTML = "";
-  const ul = document.createElement("ul");
   g.changelog.forEach(c => {
     const li = document.createElement("li");
     li.textContent = c;
-    ul.appendChild(li);
+    scriptChangelog.appendChild(li);
   });
-  scriptChangelog.appendChild(ul);
 
-  // fade-in sequentially
-  setTimeout(() => { scriptName.style.transition = "all 0.5s"; scriptName.style.opacity = 1; }, 100);
-  setTimeout(() => { scriptAnnouncement.style.transition = "all 0.5s"; scriptAnnouncement.style.opacity = 1; }, 300);
-  setTimeout(() => { scriptLoader.style.transition = "all 0.5s"; scriptLoader.style.opacity = 1; }, 500);
-  setTimeout(() => { scriptFeatures.style.transition = "all 0.5s"; scriptFeatures.style.opacity = 1; }, 700);
-  setTimeout(() => { scriptChangelog.style.transition = "all 0.5s"; scriptChangelog.style.opacity = 1; }, 900);
+  // Sequential fade-in
+  setTimeout(() => fadeIn(scriptName, 0), 100);
+  setTimeout(() => fadeIn(scriptAnnouncement, 0), 200);
+  setTimeout(() => fadeIn(scriptLoader, 0), 300);
+  setTimeout(() => fadeIn(scriptFeatures, 0), 400);
+  setTimeout(() => fadeIn(scriptChangelog, 0), 500);
 }
 
-// back button
+function fadeIn(el, delay) {
+  el.style.transition = "all 0.5s ease";
+  el.style.opacity = 1;
+  el.style.transform = "translateY(0)";
+}
+
+// Back button
 backBtn.addEventListener("click", () => {
   pages.forEach(p => p.classList.remove("active-page"));
   document.getElementById("scripts").classList.add("active-page");
@@ -165,10 +174,7 @@ copyLoader.addEventListener("click", () => {
 });
 
 // ------------------------ DISCORD BUTTON ------------------------
-const discordBtn = document.querySelector("#discord .copy-btn");
-if (discordBtn) {
-  discordBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    window.open("https://discord.gg/yourinvitehere", "_blank"); // <-- replace with your invite
-  });
-}
+document.querySelector(".copy-btn[href='#']").addEventListener("click", (e) => {
+  e.preventDefault();
+  window.open("YOUR_DISCORD_LINK_HERE", "_blank");
+});
