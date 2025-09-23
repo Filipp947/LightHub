@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
 <!-- HEADER -->
 <header>
   <h1>Light Hub</h1>
@@ -30,7 +29,7 @@
     <div class="announcement">🌟 Welcome to Light Hub, the #1 scripts hub!</div>
     <div class="card">
       <h2>Welcome To Light Hub</h2>
-      <p>Witness the unimaginable growth and absolute greatness of Light Hub live! Get access TODAY!</p>
+      <p>You are witnessing the unimaginable growth and absolute greatness this script is achieving live right before your own eyes! Get Light Hub TODAY!</p>
     </div>
   </section>
 
@@ -51,9 +50,7 @@
           <option value="Detected">Detected</option>
         </select>
       </div>
-      <div class="game-list" id="gameList">
-        <!-- Scripts cards dynamically rendered here -->
-      </div>
+      <div class="game-list" id="gameList"></div>
     </div>
   </section>
 
@@ -71,7 +68,7 @@
       <h2>Join our Discord</h2>
       <p>Stay updated with all Light Hub announcements, new scripts, and updates!</p>
       <div style="margin-top:1rem;">
-        <a href="#" class="copy-btn">Join Discord</a>
+        <a href="#" class="copy-btn" id="discordLink">Join Discord</a>
       </div>
     </div>
   </section>
@@ -88,13 +85,13 @@
       </div>
 
       <div class="loader-changelog-container">
-        <div class="scroll-box loader-box glow-wrapper">
+        <div class="scroll-box loader-box">
           <h3>Loader</h3>
           <button class="copy-btn" id="copyLoader">Copy Loader</button>
           <code id="scriptLoader"></code>
         </div>
 
-        <div class="scroll-box changelog-box glow-wrapper">
+        <div class="scroll-box changelog-box">
           <h3>Changelog</h3>
           <ul id="scriptChangelog"></ul>
         </div>
