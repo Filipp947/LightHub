@@ -1,6 +1,7 @@
 // ------------------------ HAMBURGER TOGGLE ------------------------
 const hamburger = document.getElementById('hamburger');
 const menu = document.getElementById('menu');
+
 hamburger.addEventListener('click', () => {
   hamburger.classList.toggle('active');
   if (menu.style.display === 'flex') {
@@ -13,6 +14,14 @@ hamburger.addEventListener('click', () => {
   }
 });
 
+// Hamburger hover glow animation
+hamburger.addEventListener('mouseenter', () => {
+  hamburger.style.boxShadow = '0 0 15px #c084fc';
+});
+hamburger.addEventListener('mouseleave', () => {
+  if(!hamburger.classList.contains('active')) hamburger.style.boxShadow = 'none';
+});
+
 // ------------------------ SCRIPTS DATA ------------------------
 const scripts = [
   {
@@ -20,7 +29,7 @@ const scripts = [
     loader: `loadstring(game:HttpGet("https://raw.githubusercontent.com/Filipp947/LightHub/refs/heads/main/99nightsintheforestloader.lua"))()`,
     announcement: "Bypassed Latest Anticheat!",
     features: [
-      "Kill Aura","Chop Aura","Aura Radius","Enable Hitbox","Hitbox Size",
+      "Kill Aura","Chop Aura","Enable Hitbox","Hitbox Size",
       "Auto Eat","Auto Upgrade Campfire","Auto Cook","Auto Collect Coins","Auto Pick Flower",
       "Enable Esp Items","Esp Entity","Enable Esp Entity","ESP Players",
       "Bring","Bring Scrap to Workbench","Bring Wood to Workbench",
@@ -69,7 +78,7 @@ function renderGames() {
     wrapper.className = "glow-wrapper";
 
     const card = document.createElement("div");
-    card.className = "card";
+    card.className = "game-card";
     card.innerHTML = `
       <h3>${g.name}</h3>
       <div class="badges">
@@ -86,6 +95,16 @@ function renderGames() {
       card.style.opacity = 1;
       card.style.transform = "scale(1)";
     }, i * 100);
+
+    // Hover glow effect
+    card.addEventListener('mouseenter', () => {
+      card.style.boxShadow = '0 0 50px rgba(200,132,252,0.7)';
+      card.style.transform = 'scale(1.05)';
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.boxShadow = '0 0 20px rgba(138,43,226,0.4)';
+      card.style.transform = 'scale(1)';
+    });
 
     card.addEventListener("click", () => openScriptPage(i));
     wrapper.appendChild(card);
@@ -125,13 +144,21 @@ function openScriptPage(index) {
     el.style.transform = "translateY(10px)";
   });
 
-  // FEATURES as chips
+  // FEATURES as glowing chips
   scriptFeatures.innerHTML = "";
   g.features.forEach(f => {
     const chip = document.createElement("span");
     chip.className = "feature-chip";
     chip.textContent = f;
+    chip.style.opacity = 0;
     scriptFeatures.appendChild(chip);
+
+    // Animate each chip
+    setTimeout(() => {
+      chip.style.transition = 'all 0.4s ease';
+      chip.style.opacity = 1;
+      chip.style.transform = 'translateY(0)';
+    }, 100 + Math.random()*300);
   });
 
   // CHANGELOG
@@ -139,18 +166,26 @@ function openScriptPage(index) {
   g.changelog.forEach(c => {
     const li = document.createElement("li");
     li.textContent = c;
+    li.style.opacity = 0;
     scriptChangelog.appendChild(li);
+
+    // Animate each changelog item
+    setTimeout(() => {
+      li.style.transition = 'all 0.5s ease';
+      li.style.opacity = 1;
+      li.style.transform = 'translateY(0)';
+    }, 150 + Math.random()*300);
   });
 
   // Sequential fade-in
-  setTimeout(() => fadeIn(scriptName, 0), 100);
-  setTimeout(() => fadeIn(scriptAnnouncement, 0), 200);
-  setTimeout(() => fadeIn(scriptLoader, 0), 300);
-  setTimeout(() => fadeIn(scriptFeatures, 0), 400);
-  setTimeout(() => fadeIn(scriptChangelog, 0), 500);
+  setTimeout(() => fadeIn(scriptName), 100);
+  setTimeout(() => fadeIn(scriptAnnouncement), 200);
+  setTimeout(() => fadeIn(scriptLoader), 300);
+  setTimeout(() => fadeIn(scriptFeatures), 400);
+  setTimeout(() => fadeIn(scriptChangelog), 500);
 }
 
-function fadeIn(el, delay) {
+function fadeIn(el) {
   el.style.transition = "all 0.5s ease";
   el.style.opacity = 1;
   el.style.transform = "translateY(0)";
