@@ -13,54 +13,27 @@ hamburger.addEventListener('click', () => {
   }
 });
 
+// ------------------------ SCRIPTS DATA ------------------------
 const scripts = [
   {
     name: "99 Nights in the Forest",
     loader: `loadstring(game:HttpGet("https://raw.githubusercontent.com/Filipp947/LightHub/refs/heads/main/99nightsintheforestloader.lua"))()`,
     announcement: "Bypassed Latest Anticheat!",
     features: [
-      "Kill Aura",
-      "Chop Aura",
-      "Aura Radius",
-      "Enable Hitbox",
-      "Hitbox Size",
-      "Auto Eat",
-      "Auto Upgrade Campfire",
-      "Auto Cook",
-      "Auto Collect Coins",
-      "Auto Pick Flower",
-      "Enable Esp Items",
-      "Esp Entity",
-      "Esp Entity",
-      "Enable Esp Entity",
-      "ESP Players",
-      "Bring",
-      "Bring Scrap to Workbench",
-      "Bring Wood to Workbench",
-      "Teleport to campfire",
-      "Teleport to stronghold",
-      "Teleport To Children",
-      "Enable Fly",
-      "Speed Changer",
-      "Noclip",
-      "Instant Interact",
-      "Disable Deer",
-      "Fullbright",
-      "Auto Plant Saplings",
-      "Delete Fog",
-      "Vibrant Colors",
-      "FPS Boost",
-      "Show FPS",
-      "Show Ping",
-      "Anti AFK Kick",
-      "Anti Void"
+      "Kill Aura","Chop Aura","Aura Radius","Enable Hitbox","Hitbox Size",
+      "Auto Eat","Auto Upgrade Campfire","Auto Cook","Auto Collect Coins","Auto Pick Flower",
+      "Enable Esp Items","Esp Entity","Esp Entity","Enable Esp Entity","ESP Players",
+      "Bring","Bring Scrap to Workbench","Bring Wood to Workbench",
+      "Teleport to campfire","Teleport to stronghold","Teleport To Children",
+      "Enable Fly","Speed Changer","Noclip","Instant Interact","Disable Deer",
+      "Fullbright","Auto Plant Saplings","Delete Fog","Vibrant Colors",
+      "FPS Boost","Show FPS","Show Ping","Anti AFK Kick","Anti Void"
     ],
     changelog: ["Bypassed Latest Anticheat", "Fixed Lag Issues", "Improved Features UI"],
     type: "Key System",
     status: "Undetected"
   }
 ];
-
 
 // ------------------------ PAGE NAVIGATION ------------------------
 const pageButtons = document.querySelectorAll("#menu button");
@@ -94,7 +67,7 @@ function renderGames() {
                       (statusFilter === "" || g.status === statusFilter))
          .forEach((g, i) => {
     const card = document.createElement("div");
-    card.className = "game-card";
+    card.className = "game-card glow-box glow-pulse";
     card.innerHTML = `
       <h3>${g.name}</h3>
       <div class="badges">
@@ -137,21 +110,21 @@ function openScriptPage(index) {
   pages.forEach(p => p.classList.remove("active-page"));
   scriptPage.classList.add("active-page");
 
-  // Animate and fill content
+  // fill content
   scriptName.textContent = g.name;
   scriptLoader.textContent = g.loader;
   scriptAnnouncement.textContent = g.announcement || "";
 
-  // Animate opacity
+  // reset opacity for fade
   [scriptName, scriptLoader, scriptAnnouncement, scriptFeatures, scriptChangelog].forEach(el => {
     el.style.opacity = 0;
   });
 
-  // FEATURES as chips
+  // FEATURES as glowing chips
   scriptFeatures.innerHTML = "";
   g.features.forEach(f => {
     const chip = document.createElement("span");
-    chip.className = "feature-chip";
+    chip.className = "feature-chip glow-box glow-pulse";
     chip.textContent = f;
     scriptFeatures.appendChild(chip);
   });
@@ -174,7 +147,7 @@ function openScriptPage(index) {
   setTimeout(() => { scriptChangelog.style.transition = "all 0.5s"; scriptChangelog.style.opacity = 1; }, 900);
 }
 
-// Back button
+// back button
 backBtn.addEventListener("click", () => {
   pages.forEach(p => p.classList.remove("active-page"));
   document.getElementById("scripts").classList.add("active-page");
@@ -190,3 +163,12 @@ copyLoader.addEventListener("click", () => {
     copyLoader.style.transform = "scale(1)"; 
   }, 1500);
 });
+
+// ------------------------ DISCORD BUTTON ------------------------
+const discordBtn = document.querySelector("#discord .copy-btn");
+if (discordBtn) {
+  discordBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    window.open("https://discord.gg/yourinvitehere", "_blank"); // <-- replace with your invite
+  });
+}
