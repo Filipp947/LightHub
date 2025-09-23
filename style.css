@@ -26,6 +26,7 @@ header {
   top: 0;
   z-index: 1000;
   box-shadow: 0 0 15px rgba(140, 0, 255, 0.6);
+  transition: box-shadow 0.3s;
 }
 
 header h1 {
@@ -40,6 +41,7 @@ header h1 {
   flex-direction: column;
   gap: 5px;
   cursor: pointer;
+  transition: transform 0.3s;
 }
 
 .hamburger span {
@@ -48,6 +50,16 @@ header h1 {
   background: #fff;
   border-radius: 3px;
   transition: 0.3s;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
 }
 
 .menu {
@@ -60,6 +72,7 @@ header h1 {
   border-radius: 12px;
   box-shadow: 0 0 20px rgba(140, 0, 255, 0.6);
   overflow: hidden;
+  animation: fadeIn 0.3s ease forwards;
 }
 
 .menu button {
@@ -82,10 +95,12 @@ header h1 {
 main {
   flex: 1;
   padding: 2rem;
+  animation: fadeIn 0.5s ease;
 }
 
 .page {
   display: none;
+  animation: fadeIn 0.4s ease;
 }
 
 .active-page {
@@ -99,6 +114,11 @@ main {
   padding: 1.5rem;
   margin-bottom: 2rem;
   box-shadow: 0 0 20px rgba(140, 0, 255, 0.4);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 30px rgba(168, 85, 247, 0.7);
 }
 
 /* announcements */
@@ -110,6 +130,7 @@ main {
   font-weight: bold;
   text-align: center;
   box-shadow: 0 0 25px rgba(168, 85, 247, 0.7);
+  animation: pulseGlow 3s infinite;
 }
 
 /* ---------- SCRIPTS PAGE ---------- */
@@ -155,12 +176,6 @@ main {
   background: rgba(15, 0, 30, 0.95);
 }
 
-@keyframes glowing {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
 /* ---------- INDIVIDUAL SCRIPT PAGE ---------- */
 #scriptPage .feature-section {
   display: flex;
@@ -175,9 +190,9 @@ main {
   border-radius: 8px;
   font-size: 0.85rem;
   box-shadow: 0 0 10px rgba(140, 0, 255, 0.5);
+  animation: pulseGlow 2s infinite;
 }
 
-/* loader + changelog */
 .loader-changelog-container {
   display: flex;
   gap: 1.5rem;
@@ -193,6 +208,11 @@ main {
   max-height: 250px;
   overflow-y: auto;
   box-shadow: 0 0 15px rgba(140, 0, 255, 0.3);
+  transition: box-shadow 0.3s;
+}
+
+.scroll-box:hover {
+  box-shadow: 0 0 25px rgba(168, 85, 247, 0.7);
 }
 
 .copy-btn {
@@ -217,4 +237,21 @@ footer {
   padding: 1rem;
   background: rgba(20, 0, 40, 0.9);
   box-shadow: 0 -2px 15px rgba(140, 0, 255, 0.5);
+}
+
+/* ---------- ANIMATIONS ---------- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes glowing {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 15px rgba(168, 85, 247, 0.4); }
+  50% { box-shadow: 0 0 30px rgba(168, 85, 247, 0.9); }
 }
