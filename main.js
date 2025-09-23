@@ -160,5 +160,5 @@ copyLoader.addEventListener("click", () => {
 // ------------------------ DISCORD BUTTON ------------------------
 const discordBtn = document.getElementById("discordBtn");
 discordBtn.addEventListener("click", () => {
-  window.open("YOUR_DISCORD_LINK_HERE", "_blank");
+  window.open("https://discord.gg/Z5TBEsec5W", "_blank");
 });
