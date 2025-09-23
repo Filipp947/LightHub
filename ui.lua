@@ -1316,14 +1316,8 @@ function Module:create_multidropdown()
 
     Dropdown:update()
 
-    new_option.MouseButton1Click:Connect(function()
-    self.selectedOption = value
-    TextLabel.Text = value
-    Library.Flags[self.flag] = value
-    self.callback(value)
-    Library.save_flags()
-    Dropdown:update(self)
-    -- remove Dropdown:close() here
+    
+    
 end)
 
 
@@ -1553,14 +1547,8 @@ function Module:create_dropdown()
 
     Dropdown:update()
 
-    new_option.MouseButton1Click:Connect(function()
-    self.selectedOption = value
-    TextLabel.Text = value
-    Library.Flags[self.flag] = value
-    self.callback(value)
-    Library.save_flags()
-    Dropdown:update(self)
-    -- remove Dropdown:close() here
+    
+    
 end)
 
 
