@@ -48,6 +48,9 @@ local function checkKey(input_key)
 		elseif game.gameId == 8316902627 then
 		-- pvb
 		loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/f020a6c36f648cab3f8cee0eebdd3930.lua"))()
+		elseif game.gameId == 6331902150 then
+		-- forsaken
+		loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/986f8c7d1a33f1040d7a3cdc02d5504b.lua"))()
 		end
 		
 		
