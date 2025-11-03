@@ -1,6 +1,190 @@
-repeat
-    task.wait()
-until game:IsLoaded()
+
+
+
+
+
+
+local function an()
+	repeat task.wait() until game:IsLoaded()
+
+	local players = game:GetService("Players")
+	local tween = game:GetService("TweenService")
+	local plr = players.LocalPlayer
+
+	local gui = Instance.new("ScreenGui")
+	gui.Name = "LightHubLoading"
+	gui.IgnoreGuiInset = true
+	gui.ResetOnSpawn = false
+	gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	gui.Parent = plr:WaitForChild("PlayerGui")
+
+	local bg = Instance.new("Frame", gui)
+	bg.Size = UDim2.fromScale(1,1)
+	bg.BackgroundColor3 = Color3.fromRGB(0,0,0)
+	bg.BackgroundTransparency = 1
+
+	local dark = Instance.new("Frame", gui)
+	dark.Size = UDim2.fromScale(1,1)
+	dark.BackgroundColor3 = Color3.fromRGB(12,12,12)
+	dark.BackgroundTransparency = 1
+
+	local edge = Instance.new("Frame", gui)
+	edge.Size = UDim2.fromScale(1,1)
+	edge.BackgroundTransparency = 1
+	local grad = Instance.new("UIGradient", edge)
+	grad.Color = ColorSequence.new({
+		ColorSequenceKeypoint.new(0, Color3.fromRGB(90,80,50)),
+		ColorSequenceKeypoint.new(0.5, Color3.fromRGB(15,10,5)),
+		ColorSequenceKeypoint.new(1, Color3.fromRGB(90,80,50))
+	})
+	grad.Rotation = 0
+
+	local dustFolder = Instance.new("Folder", gui)
+	for i = 1, 80 do
+		local p = Instance.new("Frame", dustFolder)
+		p.AnchorPoint = Vector2.new(0.5,0.5)
+		p.Position = UDim2.fromScale(math.random(), math.random())
+		p.Size = UDim2.fromOffset(math.random(2,4), math.random(2,4))
+		p.BackgroundColor3 = Color3.fromRGB(255,230,120)
+		p.BackgroundTransparency = 1
+		local c = Instance.new("UICorner", p)
+		c.CornerRadius = UDim.new(1,0)
+	end
+
+	local orb = Instance.new("Frame", gui)
+	orb.AnchorPoint = Vector2.new(0.5,0.45)
+	orb.Position = UDim2.fromScale(0.5,0.45)
+	orb.Size = UDim2.fromScale(0.25,0.25)
+	orb.BackgroundColor3 = Color3.fromRGB(255,220,120)
+	orb.BackgroundTransparency = 1
+	local oc = Instance.new("UICorner", orb)
+	oc.CornerRadius = UDim.new(1,0)
+
+	local core = Instance.new("Frame", orb)
+	core.AnchorPoint = Vector2.new(0.5,0.5)
+	core.Position = UDim2.fromScale(0.5,0.5)
+	core.Size = UDim2.fromScale(0.6,0.6)
+	core.BackgroundColor3 = Color3.fromRGB(255,255,200)
+	core.BackgroundTransparency = 1
+	local cc = Instance.new("UICorner", core)
+	cc.CornerRadius = UDim.new(1,0)
+
+	local halo = Instance.new("Frame", orb)
+	halo.AnchorPoint = Vector2.new(0.5,0.5)
+	halo.Position = UDim2.fromScale(0.5,0.5)
+	halo.Size = UDim2.fromScale(1.5,1.5)
+	halo.BackgroundColor3 = Color3.fromRGB(255,240,180)
+	halo.BackgroundTransparency = 1
+	local hc = Instance.new("UICorner", halo)
+	hc.CornerRadius = UDim.new(1,0)
+	local hs = Instance.new("UIStroke", halo)
+	hs.Thickness = 2
+	hs.Color = Color3.fromRGB(255,220,100)
+	hs.Transparency = 1
+
+	local text = Instance.new("TextLabel", gui)
+	text.AnchorPoint = Vector2.new(0.5,0)
+	text.Position = UDim2.fromScale(0.5,0.78)
+	text.Size = UDim2.fromScale(0.8,0.1)
+	text.BackgroundTransparency = 1
+	text.TextColor3 = Color3.fromRGB(255,255,255)
+	text.Font = Enum.Font.GothamBold
+	text.TextScaled = true
+	text.TextTransparency = 1
+	text.Text = ""
+
+	local function tw(o,t,st,dir,p)
+		return tween:Create(o, TweenInfo.new(t,st,dir), p)
+	end
+
+	task.spawn(function()
+		while gui and gui.Parent do
+			local t1 = tw(grad,1.8,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut,{
+				Color = ColorSequence.new({
+					ColorSequenceKeypoint.new(0, Color3.fromRGB(100,85,50)),
+					ColorSequenceKeypoint.new(0.5, Color3.fromRGB(20,15,10)),
+					ColorSequenceKeypoint.new(1, Color3.fromRGB(100,85,50))
+				})
+			})
+			t1:Play()
+			t1.Completed:Wait()
+			local t2 = tw(grad,1.8,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut,{
+				Color = ColorSequence.new({
+					ColorSequenceKeypoint.new(0, Color3.fromRGB(80,70,40)),
+					ColorSequenceKeypoint.new(0.5, Color3.fromRGB(15,10,5)),
+					ColorSequenceKeypoint.new(1, Color3.fromRGB(80,70,40))
+				})
+			})
+			t2:Play()
+			t2.Completed:Wait()
+		end
+	end)
+
+	task.spawn(function()
+		while gui and gui.Parent do
+			for _,d in ipairs(dustFolder:GetChildren()) do
+				tw(d, 3, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, {
+					Position = UDim2.fromScale(math.random(), math.random()),
+					BackgroundTransparency = math.random(70,95)/100
+				}):Play()
+			end
+			task.wait(3)
+		end
+	end)
+
+	tw(bg, 1, Enum.EasingStyle.Sine, Enum.EasingDirection.Out, {BackgroundTransparency = 0}):Play()
+	tw(dark, 1, Enum.EasingStyle.Sine, Enum.EasingDirection.Out, {BackgroundTransparency = 0.35}):Play()
+	tw(edge, 1, Enum.EasingStyle.Sine, Enum.EasingDirection.Out, {BackgroundTransparency = 0}):Play()
+
+	task.wait(0.5)
+	tw(orb, 0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.Out, {BackgroundTransparency = 0.2}):Play()
+	tw(core, 0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.Out, {BackgroundTransparency = 0.05}):Play()
+	tw(hs, 1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out, {Transparency = 0.4}):Play()
+	tw(halo, 1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out, {BackgroundTransparency = 0.8}):Play()
+
+	task.wait(0.6)
+	for i = 1, 3 do
+		local up = tw(core,0.3,Enum.EasingStyle.Sine,Enum.EasingDirection.Out,{Size=UDim2.fromScale(0.7,0.7),BackgroundTransparency=0})
+		up:Play() up.Completed:Wait()
+		local down = tw(core,0.3,Enum.EasingStyle.Sine,Enum.EasingDirection.In,{Size=UDim2.fromScale(0.6,0.6),BackgroundTransparency=0.1})
+		down:Play() down.Completed:Wait()
+	end
+
+	for i=1,2 do
+		local expand = tw(halo,0.5,Enum.EasingStyle.Sine,Enum.EasingDirection.Out,{Size=UDim2.fromScale(1.7,1.7),BackgroundTransparency=0.6})
+		expand:Play() expand.Completed:Wait()
+		local fade = tw(halo,0.5,Enum.EasingStyle.Sine,Enum.EasingDirection.In,{Size=UDim2.fromScale(1.5,1.5),BackgroundTransparency=0.8})
+		fade:Play() fade.Completed:Wait()
+	end
+
+	text.TextTransparency = 0
+	local word = "Light Hub"
+	for i = 1, #word do
+		text.Text = string.sub(word, 1, i)
+		task.wait(0.075)
+	end
+
+	local bright = tw(orb,0.4,Enum.EasingStyle.Sine,Enum.EasingDirection.Out,{BackgroundTransparency=0})
+	bright:Play() bright.Completed:Wait()
+	local dim = tw(orb,0.4,Enum.EasingStyle.Sine,Enum.EasingDirection.In,{BackgroundTransparency=0.2})
+	dim:Play()
+
+	task.wait(2)
+	tw(text,0.8,Enum.EasingStyle.Sine,Enum.EasingDirection.In,{TextTransparency=1}):Play()
+	tw(core,0.8,Enum.EasingStyle.Quad,Enum.EasingDirection.In,{BackgroundTransparency=1}):Play()
+	tw(orb,0.8,Enum.EasingStyle.Quad,Enum.EasingDirection.In,{BackgroundTransparency=1}):Play()
+	tw(halo,0.8,Enum.EasingStyle.Quad,Enum.EasingDirection.In,{BackgroundTransparency=1}):Play()
+	tw(hs,0.8,Enum.EasingStyle.Quad,Enum.EasingDirection.In,{Transparency=1}):Play()
+	tw(edge,1,Enum.EasingStyle.Sine,Enum.EasingDirection.In,{BackgroundTransparency=1}):Play()
+	tw(dark,1,Enum.EasingStyle.Sine,Enum.EasingDirection.In,{BackgroundTransparency=1}):Play()
+	tw(bg,1,Enum.EasingStyle.Sine,Enum.EasingDirection.In,{BackgroundTransparency=1}):Play()
+
+	task.wait(1.3)
+	gui:Destroy()
+end
+
+an()
+
 local a = game:GetService("Players").LocalPlayer
 local b = a:WaitForChild("PlayerGui")
 local c = game:GetService("TweenService")
@@ -73,6 +257,7 @@ o.Font = Enum.Font.Code
 o.PlaceholderText = "Insert the Key Here!"
 o.TextColor3 = Color3.fromRGB(230, 230, 230)
 o.TextSize = 16
+o.Text = ""
 Instance.new("UICorner", o).CornerRadius = UDim.new(0, 5)
 local function p(q, r, s, t)
     local u = Instance.new("TextButton")
