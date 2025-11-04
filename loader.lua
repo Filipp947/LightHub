@@ -357,7 +357,8 @@ local F = {
     [7326934954] = "https://api.luarmor.net/files/v3/loaders/53bfeeeca30266553e39e7e2a522336c.lua",
     [8316902627] = "https://api.luarmor.net/files/v3/loaders/f020a6c36f648cab3f8cee0eebdd3930.lua",
     [6331902150] = "https://api.luarmor.net/files/v3/loaders/986f8c7d1a33f1040d7a3cdc02d5504b.lua",
-    [66654135] = "https://api.luarmor.net/files/v3/loaders/0cb08504db4379defa3e11f598619b2b.lua"
+    [66654135] = "https://api.luarmor.net/files/v3/loaders/0cb08504db4379defa3e11f598619b2b.lua",
+	[994732206] = "https://api.luarmor.net/files/v3/loaders/da85d74ed1eda27de6bf481960ff649b.lua"
 }
 local function G(H)
     local I = E.check_key(H or script_key)
