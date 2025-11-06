@@ -368,7 +368,9 @@ local function G(H)
         writefile(D, script_key)
         if F[game.GameId] then
             loadstring(game:HttpGet(F[game.GameId]))()
-        else
+        elseif game.PlaceId == 96342491571673 or game.PlaceId == 109983668079237 then
+			loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/152436098dce50a55092dc524c4d485a.lua"))()
+		else
             a:Kick("Game not supported.")
         end
     elseif I.code:find("KEY_") then
