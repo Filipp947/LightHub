@@ -193,6 +193,7 @@ local Q = {
 local function R(S)
     local T = P.check_key(S)
     if T.code == "KEY_VALID" then
+        script_key = S
         writefile(O, S)
         k("Success", "Key verified successfully!", 3)
         task.wait(0.5)
