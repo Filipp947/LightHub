@@ -161,7 +161,7 @@ C.MouseButton1Click:Connect(
 )
 I.MouseButton1Click:Connect(
     function()
-        setclipboard("https://ads.luarmor.net/get_key?for=Light_Hub-hjhJoieYQkOu")
+        setclipboard("https://ads.luarmor.net/get_key?for=-lhNoDVMxVBZB")
         F.Visible = false
         K(C, "Copied!")
     end
