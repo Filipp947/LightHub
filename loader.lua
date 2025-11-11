@@ -182,7 +182,7 @@ E.MouseButton1Click:Connect(
 makefolder("Light Hub")
 local O = "Light Hub/Key.txt"
 local P = loadstring(game:HttpGet("https://sdkAPI-public.luarmor.net/library.lua"))()
-P.script_id = "53bfeeeca30266553e39e7e2a522336c"
+P.script_id = "95ed1c3a04710927b412f8c51bc16c26"
 local Q = {
     [7326934954] = "https://api.luarmor.net/files/v3/loaders/53bfeeeca30266553e39e7e2a522336c.lua",
     [8316902627] = "https://api.luarmor.net/files/v3/loaders/f020a6c36f648cab3f8cee0eebdd3930.lua",
